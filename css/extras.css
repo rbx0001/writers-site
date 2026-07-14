@@ -1,0 +1,283 @@
+/* ============================================
+   WRITERS — Additional Styles
+   ============================================ */
+
+/* 🏷️ Name generator */
+.namer-section {
+  background: linear-gradient(135deg, rgba(255,107,53,0.05), rgba(155,89,182,0.05));
+  border: 1px solid rgba(255,107,53,0.1);
+  border-radius: 16px;
+  padding: 48px 32px;
+  margin-top: 60px;
+  text-align: center;
+}
+
+.namer-section h3 {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  letter-spacing: 3px;
+  color: var(--light);
+  margin-bottom: 8px;
+}
+
+.namer-section p {
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 24px;
+  font-size: 0.9rem;
+}
+
+.namer-form {
+  display: flex;
+  gap: 12px;
+  max-width: 400px;
+  margin: 0 auto 32px;
+}
+
+.namer-form input {
+  flex: 1;
+  padding: 14px 18px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: var(--light);
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.namer-form input:focus {
+  border-color: var(--accent);
+}
+
+.tag-display {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.tag-text {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: 6px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.tag-meta {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.tag-style {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: var(--accent);
+  border: 1px solid rgba(255,107,53,0.2);
+  padding: 3px 10px;
+  border-radius: 4px;
+}
+
+.tag-sig {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.3);
+  font-family: var(--font-mono);
+}
+
+.tag-hash {
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.15);
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+}
+
+/* 📊 Live price embed */
+.price-embed {
+  margin-bottom: 32px;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.2);
+}
+
+.price-embed iframe {
+  width: 100%;
+  height: 500px;
+  border: none;
+  display: block;
+}
+
+/* 🖼️ Gallery */
+.gallery-section {
+  margin-top: 60px;
+}
+
+.gallery-section h3 {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  letter-spacing: 3px;
+  color: var(--light);
+  margin-bottom: 8px;
+}
+
+.gallery-section > p {
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 24px;
+}
+
+.gallery-grid-community {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.gallery-upload-card {
+  background: rgba(255,255,255,0.03);
+  border: 2px dashed rgba(255,255,255,0.1);
+  border-radius: 12px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: all 0.3s;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery-upload-card:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(255,107,53,0.05);
+}
+
+.gallery-upload-card .upload-icon {
+  font-size: 2rem;
+}
+
+.gallery-upload-card .upload-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.gallery-upload-card input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.gallery-upload-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-placeholder {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  color: rgba(255,255,255,0.2);
+  font-size: 0.8rem;
+}
+
+.gallery-placeholder-icon {
+  font-size: 2.5rem;
+  opacity: 0.4;
+}
+
+/* 📰 Zine section */
+.zine-section {
+  margin-top: 60px;
+}
+
+.zine-section h3 {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  letter-spacing: 3px;
+  color: var(--light);
+  margin-bottom: 8px;
+}
+
+.zine-section > p {
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 24px;
+}
+
+.zine-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.zine-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 28px;
+  transition: all 0.3s;
+}
+
+.zine-card:hover {
+  border-color: rgba(255,107,53,0.2);
+  transform: translateY(-3px);
+}
+
+.zine-card h4 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  letter-spacing: 1.5px;
+  color: var(--light);
+  margin-bottom: 8px;
+}
+
+.zine-card p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.zine-date {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.2);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* Responsive additions */
+@media (max-width: 768px) {
+  .namer-form {
+    flex-direction: column;
+  }
+  .price-embed iframe {
+    height: 400px;
+  }
+  .gallery-grid-community {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}

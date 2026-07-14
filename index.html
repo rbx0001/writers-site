@@ -7,6 +7,7 @@
   <link rel="icon" type="image/jpeg" href="assets/writers-icon.jpg" />
   <link rel="apple-touch-icon" href="assets/writers-icon.jpg" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/extras.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;700;800;900&family=Rubik+Spray+Paint&display=swap" rel="stylesheet" />
 </head>
@@ -22,6 +23,7 @@
       <div class="nav-links" id="navLinks">
         <a href="#token" class="nav-link">Token</a>
         <a href="#culture" class="nav-link">Culture</a>
+        <a href="#gallery" class="nav-link">Gallery</a>
         <a href="#roadmap" class="nav-link">Roadmap</a>
         <a href="#merch" class="nav-link">Merch</a>
         <a href="#community" class="nav-link">Community</a>
@@ -68,6 +70,11 @@
         <span class="tag">Token</span>
         <h2>$WRTRS — The Writers' Token</h2>
         <p class="section-sub">Born from spray cans and smart contracts.</p>
+      </div>
+
+      <!-- 💹 Live Price Chart -->
+      <div class="price-embed">
+        <iframe src="https://dexscreener.com/solana/HWagQerEDV7L4877mPc3PxeS3aJ7aAx51s5t2txGpump?embed=1" allow="clipboard-write"></iframe>
       </div>
 
       <div class="token-grid">
@@ -197,6 +204,86 @@
                 <span class="art-label">Wildstyle</span>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🏷️ Graffiti Name Generator -->
+      <div class="namer-section">
+        <h3>🏷️ Get Your Tag</h3>
+        <p>Type your name and we'll give you a graffiti tag. Writers move in silence, but they rep their name loud.</p>
+        <div class="namer-form">
+          <input type="text" id="tagInput" placeholder="YOUR NAME" maxlength="20" />
+          <button class="btn btn-primary" id="generateTag">Tag Me</button>
+        </div>
+        <div id="tagOutput"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🖼️ COMMUNITY GALLERY -->
+  <section class="section section-light" id="gallery">
+    <div class="container">
+      <div class="section-header">
+        <span class="tag">Gallery</span>
+        <h2>Wall of Fame</h2>
+        <p class="section-sub">Submit your pieces. Get featured. Rep the crew.</p>
+      </div>
+
+      <div class="gallery-section">
+        <div class="gallery-grid-community">
+          <div class="gallery-upload-card" id="uploadCard">
+            <span class="upload-icon">📸</span>
+            <span class="upload-text">Submit Your Art</span>
+            <input type="file" accept="image/*" id="artUpload" />
+          </div>
+          <div class="gallery-placeholder">
+            <span class="gallery-placeholder-icon">🎨</span>
+            <span>First submission goes here</span>
+          </div>
+          <div class="gallery-placeholder">
+            <span class="gallery-placeholder-icon">🎨</span>
+            <span>First submission goes here</span>
+          </div>
+          <div class="gallery-placeholder">
+            <span class="gallery-placeholder-icon">🎨</span>
+            <span>First submission goes here</span>
+          </div>
+          <div class="gallery-placeholder">
+            <span class="gallery-placeholder-icon">🎨</span>
+            <span>First submission goes here</span>
+          </div>
+          <div class="gallery-placeholder">
+            <span class="gallery-placeholder-icon">🎨</span>
+            <span>First submission goes here</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 📰 ZINE -->
+      <div class="zine-section" style="margin-top: 80px;">
+        <h3>📰 The Zine</h3>
+        <p>Graffiti culture, token news, and words from the streets.</p>
+        <div class="zine-grid">
+          <div class="zine-card">
+            <h4>What Is a Writer?</h4>
+            <p>From subway cars to Solana — the story of how graffiti writers became the original crypto natives. Permissionless since day one.</p>
+            <span class="zine-date">July 2026</span>
+          </div>
+          <div class="zine-card">
+            <h4>The Tag is the Tweet</h4>
+            <p>A tag is a signature. A tweet is a broadcast. Both are about getting your name out there. Both require nerve. The medium changed, the game didn't.</p>
+            <span class="zine-date">July 2026</span>
+          </div>
+          <div class="zine-card">
+            <h4>Why $WRTRS?</h4>
+            <p>Every subculture deserves a token. Graffiti gave us the aesthetic. Crypto gave us the network. $WRTRS is where they collide.</p>
+            <span class="zine-date">July 2026</span>
+          </div>
+          <div class="zine-card">
+            <h4>Buff Proof</h4>
+            <p>Graffiti gets buffed. Walls get painted over. But a token on Solana? That stays. Immutable. Permanent. The ultimate tag.</p>
+            <span class="zine-date">July 2026</span>
           </div>
         </div>
       </div>
@@ -359,9 +446,9 @@
         <a href="#" class="community-card">
           <div class="community-icon">👾</div>
           <h3>Discord</h3>
-          <p>Writers Solana</p>
+          <p>Coming Soon</p>
         </a>
-        <a href="#" class="community-card">
+        <a href="https://dexscreener.com/solana/HWagQerEDV7L4877mPc3PxeS3aJ7aAx51s5t2txGpump" target="_blank" class="community-card">
           <div class="community-icon">📊</div>
           <h3>DexScreener</h3>
           <p>View the chart</p>
@@ -401,5 +488,7 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <script src="js/namer.js"></script>
+  <script src="js/gallery.js"></script>
 </body>
 </html>

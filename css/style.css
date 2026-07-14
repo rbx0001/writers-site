@@ -21,6 +21,7 @@
   --font-display: 'Bangers', cursive;
   --font-wild: 'Rubik Spray Paint', cursive;
   --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
   --max-width: 1200px;
   --nav-height: 72px;
 }

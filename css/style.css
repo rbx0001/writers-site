@@ -134,6 +134,19 @@ img { max-width: 100%; height: auto; }
 .nav-link:hover { color: var(--accent); }
 .nav-link:hover::after { width: 100%; }
 
+.trench-link {
+  background: rgba(255, 107, 53, 0.1);
+  border: 1px solid rgba(255, 107, 53, 0.2);
+  border-radius: 6px;
+  padding: 6px 14px !important;
+  font-size: 0.8rem !important;
+}
+
+.trench-link:hover {
+  background: rgba(255, 107, 53, 0.2);
+  border-color: var(--accent);
+}
+
 .nav-toggle {
   display: none;
   background: none;

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WRITERS — $WRTRS</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='28' font-size='28'%3E🎨%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;700;800;900&family=Rubik+Spray+Paint&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- 🌟 NAVIGATION -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <span class="nav-logo-icon">🎨</span>
+        <span class="nav-logo-text">WRITERS</span>
+        <span class="nav-logo-ticker">$WRTRS</span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="#token" class="nav-link">Token</a>
+        <a href="#culture" class="nav-link">Culture</a>
+        <a href="#roadmap" class="nav-link">Roadmap</a>
+        <a href="#merch" class="nav-link">Merch</a>
+        <a href="#community" class="nav-link">Community</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- 🎬 HERO -->
+  <section class="hero" id="home">
+    <div class="hero-overlay"></div>
+    <div class="graffiti-layer" id="graffitiCanvas"></div>
+    <div class="hero-content">
+      <div class="hero-logo">
+        <img src="writers-logo.jpg" alt="WRITERS Logo" class="hero-logo-img" />
+      </div>
+      <h1 class="hero-title">
+        <span class="hero-title-main">WRITERS</span>
+        <span class="hero-title-sub">Illegible. Unstoppable. On-Chain.</span>
+      </h1>
+      <div class="hero-ticker">
+        <span class="ticker-badge">$WRTRS</span>
+        <span class="ticker-chain">Solana</span>
+      </div>
+      <p class="hero-desc">
+        The first graffiti and street art culture token on Solana. Writers move in silence — $WRTRS moves on-chain.
+      </p>
+      <div class="hero-actions">
+        <a href="https://pump.fun/coin/HWagQerEDV7L4877mPc3PxeS3aJ7aAx51s5t2txGpump" target="_blank" class="btn btn-primary">Buy $WRTRS</a>
+        <a href="#token" class="btn btn-outline">Token Info</a>
+      </div>
+    </div>
+    <div class="scroll-hint">↓ SCROLL ↓</div>
+  </section>
+
+  <!-- 🪙 TOKEN SECTION -->
+  <section class="section section-dark" id="token">
+    <div class="container">
+      <div class="section-header">
+        <span class="tag">Token</span>
+        <h2>$WRTRS — The Writers' Token</h2>
+        <p class="section-sub">Born from spray cans and smart contracts.</p>
+      </div>
+
+      <div class="token-grid">
+        <div class="token-card">
+          <div class="token-card-icon">🪙</div>
+          <h3>Token Info</h3>
+          <div class="token-info-row">
+            <span class="token-label">Name</span>
+            <span class="token-value">WRITERS</span>
+          </div>
+          <div class="token-info-row">
+            <span class="token-label">Ticker</span>
+            <span class="token-value accent">$WRTRS</span>
+          </div>
+          <div class="token-info-row">
+            <span class="token-label">Chain</span>
+            <span class="token-value">Solana</span>
+          </div>
+          <div class="token-info-row">
+            <span class="token-label">Standard</span>
+            <span class="token-value">SPL</span>
+          </div>
+        </div>
+
+        <div class="token-card">
+          <div class="token-card-icon">📋</div>
+          <h3>Contract</h3>
+          <div class="ca-wrapper">
+            <code class="ca-address" id="caAddress">HWagQerEDV7L4877mPc3PxeS3aJ7aAx51s5t2txGpump</code>
+            <button class="btn-icon" id="copyCa" title="Copy Address">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+          <div class="contract-links">
+            <a href="https://solscan.io/token/HWagQerEDV7L4877mPc3PxeS3aJ7aAx51s5t2txGpump" target="_blank" class="btn-sm">Solscan ↗</a>
+            <a href="https://pump.fun/coin/HWagQerEDV7L4877mPc3PxeS3aJ7aAx51s5t2txGpump" target="_blank" class="btn-sm">Pump.fun ↗</a>
+            <a href="https://dexscreener.com/solana/HWagQerEDV7L4877mPc3PxeS3aJ7aAx51s5t2txGpump" target="_blank" class="btn-sm">DexScreener ↗</a>
+          </div>
+        </div>
+
+        <div class="token-card token-card-wide">
+          <div class="token-card-icon">⚡</div>
+          <h3>Tokenomics</h3>
+          <div class="tokenomics-grid">
+            <div class="tomo-item">
+              <div class="tomo-value">1B</div>
+              <div class="tomo-label">Total Supply</div>
+            </div>
+            <div class="tomo-item">
+              <div class="tomo-value">0%</div>
+              <div class="tomo-label">Tax</div>
+            </div>
+            <div class="tomo-item">
+              <div class="tomo-value">🔥</div>
+              <div class="tomo-label">LP Burned</div>
+            </div>
+            <div class="tomo-item">
+              <div class="tomo-value">✊</div>
+              <div class="tomo-label">Community Owned</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🎨 CULTURE / GRAFFITI SECTION -->
+  <section class="section section-light" id="culture">
+    <div class="container">
+      <div class="section-header">
+        <span class="tag">Culture</span>
+        <h2>Graffiti &amp; Street Art</h2>
+        <p class="section-sub">Writers have been moving in silence since before the internet. Now we move on-chain.</p>
+      </div>
+
+      <div class="culture-content">
+        <div class="culture-text">
+          <h3>The Spirit of the Writer</h3>
+          <p>Graffiti is the original decentralized art form. No permission. No gatekeepers. Just a can, a wall, and the will to be seen. Writers risk everything for a tag that might buff out by morning — because the act itself is the point.</p>
+          <p>$WRTRS channels that same energy into crypto. No VC rounds. No insider allocations. Just a community of people who understand that real culture can't be captured — it has to be lived.</p>
+          <div class="culture-principles">
+            <div class="principle">
+              <span class="principle-icon">🎯</span>
+              <span>Tag or be tagged</span>
+            </div>
+            <div class="principle">
+              <span class="principle-icon">🔓</span>
+              <span>Permissionless</span>
+            </div>
+            <div class="principle">
+              <span class="principle-icon">🌆</span>
+              <span>From the streets to the chain</span>
+            </div>
+            <div class="principle">
+              <span class="principle-icon">🤝</span>
+              <span>Writers stick together</span>
+            </div>
+          </div>
+        </div>
+        <div class="culture-gallery">
+          <div class="gallery-grid">
+            <div class="gallery-item gallery-item-main">
+              <img src="writers-art.jpg" alt="Writers Street Art" />
+            </div>
+            <div class="gallery-item gallery-art">
+              <div class="art-canvas-card" id="artGen1">
+                <div class="art-canvas-inner">
+                  <span class="drip-text">WRTRS</span>
+                  <svg class="drip-svg" viewBox="0 0 200 200"><path d="M100 20 Q110 40 105 60 Q115 80 110 100" stroke="url(#grad1)" fill="none" stroke-width="8" stroke-linecap="round"/><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ff6b35"/><stop offset="100%" stop-color="#ffd700"/></linearGradient></defs></svg>
+                </div>
+                <span class="art-label">Generated Art</span>
+              </div>
+            </div>
+            <div class="gallery-item gallery-art">
+              <div class="art-canvas-card" id="artGen2">
+                <div class="art-canvas-inner">
+                  <span class="bubble-text">$WRTRS</span>
+                </div>
+                <span class="art-label">Bubble Tag</span>
+              </div>
+            </div>
+            <div class="gallery-item gallery-art">
+              <div class="art-canvas-card" id="artGen3">
+                <div class="art-canvas-inner">
+                  <span class="wild-text">WRITERS</span>
+                </div>
+                <span class="art-label">Wildstyle</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🗺️ ROADMAP -->
+  <section class="section section-dark" id="roadmap">
+    <div class="container">
+      <div class="section-header">
+        <span class="tag">Roadmap</span>
+        <h2>The Writers' Manifesto</h2>
+        <p class="section-sub">No corporate milestones. Just culture building.</p>
+      </div>
+
+      <div class="roadmap">
+        <div class="roadmap-phase">
+          <div class="phase-badge phase-done">Phase 1 ✓</div>
+          <h3>The Tag</h3>
+          <ul>
+            <li>✔ $WRTRS launch on Pump.fun</li>
+            <li>✔ Trench Paper / socials</li>
+            <li>✔ Community raid &amp; spread</li>
+          </ul>
+        </div>
+        <div class="roadmap-phase">
+          <div class="phase-badge phase-live">Phase 2 🔴 LIVE</div>
+          <h3>The Piece</h3>
+          <ul>
+            <li>🔴 Dexscreener / Birdeye listings</li>
+            <li>🔴 Graffiti gallery &amp; artist features</li>
+            <li>🔴 Website launch</li>
+          </ul>
+        </div>
+        <div class="roadmap-phase">
+          <div class="phase-badge">Phase 3</div>
+          <h3>The Production</h3>
+          <ul>
+            <li>Merch store (this site)</li>
+            <li>NFT collection — digital graffiti pieces</li>
+            <li>$WRTRS staking for merch discounts</li>
+          </ul>
+        </div>
+        <div class="roadmap-phase">
+          <div class="phase-badge">Phase 4</div>
+          <h3>The Movement</h3>
+          <ul>
+            <li>Real-world graffiti events</li>
+            <li>Artist grants from the treasury</li>
+            <li>WRITERS DAO</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 👕 MERCH SECTION -->
+  <section class="section section-light" id="merch">
+    <div class="container">
+      <div class="section-header">
+        <span class="tag">Merch</span>
+        <h2>WRITERS Gear</h2>
+        <p class="section-sub">Rep the movement. Wear the culture.</p>
+      </div>
+
+      <div class="merch-grid">
+        <div class="merch-card">
+          <div class="merch-image merch-image-placeholder">
+            <div class="merch-art-bg">
+              <span class="merch-preview-text">$WRTRS</span>
+            </div>
+          </div>
+          <div class="merch-info">
+            <h3>WRITERS Tag Tee</h3>
+            <p class="merch-desc">Classic black tee with the $WRTRS tag. Street-ready.</p>
+            <div class="merch-sizes">
+              <span>S</span><span>M</span><span>L</span><span>XL</span><span>2XL</span>
+            </div>
+            <div class="merch-bottom">
+              <span class="merch-price">$29.99</span>
+              <a href="#" class="btn-sm btn-primary">Coming Soon</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="merch-card">
+          <div class="merch-image merch-image-placeholder">
+            <div class="merch-art-bg merch-purple">
+              <span class="merch-preview-text">WRITERS</span>
+            </div>
+          </div>
+          <div class="merch-info">
+            <h3>Graffiti Hoodie</h3>
+            <p class="merch-desc">Heavyweight hoodie. Front logo, back piece. Stay warm, stay illegal.</p>
+            <div class="merch-sizes">
+              <span>S</span><span>M</span><span>L</span><span>XL</span><span>2XL</span>
+            </div>
+            <div class="merch-bottom">
+              <span class="merch-price">$54.99</span>
+              <a href="#" class="btn-sm btn-primary">Coming Soon</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="merch-card">
+          <div class="merch-image merch-image-placeholder">
+            <div class="merch-art-bg merch-green">
+              <span class="merch-preview-text">$WRTRS</span>
+            </div>
+          </div>
+          <div class="merch-info">
+            <h3>Writers Snapback</h3>
+            <p class="merch-desc">Black with embroidered $WRTRS. One size fits most heads.</p>
+            <div class="merch-bottom">
+              <span class="merch-price">$24.99</span>
+              <a href="#" class="btn-sm btn-primary">Coming Soon</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="merch-card">
+          <div class="merch-image merch-image-placeholder">
+            <div class="merch-art-bg merch-orange">
+              <span class="merch-preview-text">TAG</span>
+            </div>
+          </div>
+          <div class="merch-info">
+            <h3>Paint Can Sticker Pack</h3>
+            <p class="merch-desc">10 vinyl stickers. Slap 'em everywhere.</p>
+            <div class="merch-bottom">
+              <span class="merch-price">$9.99</span>
+              <a href="#" class="btn-sm btn-primary">Coming Soon</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🤝 COMMUNITY -->
+  <section class="section section-dark" id="community">
+    <div class="container">
+      <div class="section-header">
+        <span class="tag">Community</span>
+        <h2>Join the Crew</h2>
+        <p class="section-sub">Writers don't ask for permission. They show up.</p>
+      </div>
+
+      <div class="community-grid">
+        <a href="#" class="community-card">
+          <div class="community-icon">🐦</div>
+          <h3>Twitter / X</h3>
+          <p>Coming Soon</p>
+        </a>
+        <a href="https://t.me/writers_sol" target="_blank" class="community-card">
+          <div class="community-icon">💬</div>
+          <h3>Telegram</h3>
+          <p>@writers_sol</p>
+        </a>
+        <a href="#" class="community-card">
+          <div class="community-icon">👾</div>
+          <h3>Discord</h3>
+          <p>Writers Solana</p>
+        </a>
+        <a href="#" class="community-card">
+          <div class="community-icon">📊</div>
+          <h3>DexScreener</h3>
+          <p>View the chart</p>
+        </a>
+      </div>
+
+      <div class="newsletter">
+        <h3>Get Fresh Paint 🎨</h3>
+        <p>Subscribe for drops, merch launches, and graffiti features.</p>
+        <form class="newsletter-form" id="newsletterForm">
+          <input type="email" placeholder="your@email.com" required />
+          <button type="submit" class="btn btn-primary">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🦶 FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span class="footer-logo">🎨 WRITERS</span>
+          <span class="footer-ticker">$WRTRS</span>
+        </div>
+        <div class="footer-links">
+          <span class="footer-disclaimer">
+            $WRTRS is a meme/community token. Not financial advice. Graffiti is illegal. 
+            This website is for informational purposes only.
+          </span>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 WRITERS. Moves in silence.</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

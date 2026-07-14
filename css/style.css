@@ -86,7 +86,7 @@ img { max-width: 100%; height: auto; }
   text-decoration: none;
 }
 
-.nav-logo-icon { font-size: 1.5rem; }
+.nav-logo-icon { height: 28px; width: 28px; border-radius: 6px; object-fit: cover; }
 
 .nav-logo-text {
   font-family: var(--font-display);
@@ -1000,6 +1000,17 @@ img { max-width: 100%; height: auto; }
   font-size: 1.5rem;
   letter-spacing: 3px;
   color: var(--light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.footer-icon {
+  height: 24px;
+  width: 24px;
+  border-radius: 4px;
+  object-fit: cover;
 }
 
 .footer-ticker {

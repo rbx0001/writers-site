@@ -73,33 +73,9 @@
   line-height: 1.2;
 }
 
-.tag-meta {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.tag-style {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 2px;
-  color: var(--accent);
-  border: 1px solid rgba(255,107,53,0.2);
-  padding: 3px 10px;
-  border-radius: 4px;
-}
-
 .tag-sig {
-  font-size: 0.75rem;
-  color: rgba(255,255,255,0.3);
-  font-family: var(--font-mono);
-}
-
-.tag-hash {
-  font-size: 0.6rem;
-  color: rgba(255,255,255,0.15);
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.4);
   font-family: var(--font-mono);
   letter-spacing: 1px;
 }

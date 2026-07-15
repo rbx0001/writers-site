@@ -324,4 +324,39 @@ section li strong {
   .nav {
     padding: 12px 16px;
   }
+  .nav-logo {
+    font-size: 1rem;
+  }
+  .nav-icon-sm {
+    height: 18px;
+    width: 18px;
+  }
+  .paper-header h1 {
+    font-size: clamp(1.8rem, 8vw, 2.5rem);
+  }
+  .subtitle {
+    font-size: 0.9rem;
+  }
+  .ca {
+    font-size: 0.6rem;
+  }
+  .tomo-row {
+    padding: 10px 14px;
+    font-size: 0.8rem;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .tomo-row span:first-child {
+    font-size: 0.7rem;
+  }
+  .tomo-row span:last-child {
+    font-size: 0.75rem;
+    text-align: right;
+  }
+  section h2 {
+    font-size: 1.2rem;
+  }
+  section p, section li {
+    font-size: 0.85rem;
+  }
 }

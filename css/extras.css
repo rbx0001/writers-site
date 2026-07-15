@@ -137,6 +137,10 @@
   overflow: hidden;
 }
 
+.gallery-upload-card.no-border {
+  border: none;
+}
+
 .gallery-upload-card:hover {
   border-color: var(--accent);
   color: var(--accent);
@@ -292,5 +296,8 @@
   }
   .gallery-grid-community {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+  .tag-sig {
+    font-size: 0.7rem;
   }
 }

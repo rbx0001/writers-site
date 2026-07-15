@@ -18,11 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const clean = name.trim().toUpperCase();
     const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
     const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
-    const year = new Date().getFullYear();
 
     return {
       tag: `${prefix} ${clean} ${suffix}`,
-      signature: `${prefix} ${clean} ${suffix} • ${year}`
+      signature: `${prefix} ${clean} ${suffix}`
     };
   }
 

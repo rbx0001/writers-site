@@ -221,6 +221,15 @@
         <span class="upload-icon">📸</span>
         <span class="upload-text">Submit Your Art</span>
         <input type="file" accept="image/*" id="artUpload" style="display:none" />
+        <button class="upload-extra-btn" id="infoToggle" style="position:absolute;bottom:8px;right:8px;background:rgba(255,255,255,0.1);border:none;border-radius:6px;color:rgba(255,255,255,0.4);font-size:0.65rem;padding:4px 8px;cursor:pointer;z-index:2;">+ info</button>
+        <div class="upload-extra-field" id="infoPanel" style="display:none;position:absolute;bottom:8px;left:8px;right:8px;flex-direction:column;gap:6px;z-index:2;">
+          <input type="text" id="captionField" maxlength="120" placeholder="Caption…" style="width:100%;padding:6px 10px;border:1px solid rgba(255,255,255,0.15);border-radius:6px;background:rgba(0,0,0,0.7);color:#fff;font-size:0.75rem;outline:none;box-sizing:border-box;" />
+          <input type="text" id="artistField" maxlength="40" placeholder="Your name…" style="width:100%;padding:6px 10px;border:1px solid rgba(255,255,255,0.15);border-radius:6px;background:rgba(0,0,0,0.7);color:#fff;font-size:0.75rem;outline:none;box-sizing:border-box;" />
+          <input type="date" id="dateField" style="width:100%;padding:6px 10px;border:1px solid rgba(255,255,255,0.15);border-radius:6px;background:rgba(0,0,0,0.7);color:#fff;font-size:0.75rem;outline:none;box-sizing:border-box;color-scheme:dark;" />
+          <input type="text" id="mapField" placeholder="Google Maps link (optional)…" style="width:100%;padding:6px 10px;border:1px solid rgba(255,255,255,0.15);border-radius:6px;background:rgba(0,0,0,0.7);color:#fff;font-size:0.65rem;outline:none;box-sizing:border-box;" />
+        </div>
+        <!-- 🔒 Anti-bot honeypot -->
+        <input type="text" id="honeypotField" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;" />
       `;
     }
 

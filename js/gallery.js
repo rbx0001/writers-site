@@ -271,9 +271,71 @@
 
         wrapper.appendChild(img);
 
+        // Click to open lightbox
+        wrapper.addEventListener('click', () => openLightbox(publicUrl));
+
         const uploadCard = document.getElementById('uploadCard');
         uploadCard.insertAdjacentElement('afterend', wrapper);
       });
     }
   });
+
+  // 🖼️ Lightbox — click thumbnail to view full image
+  let activeLightbox = null;
+
+  function openLightbox(src) {
+    closeLightbox();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'gallery-lightbox';
+    overlay.style.cssText = `
+      position: fixed; inset: 0; z-index: 99999;
+      background: rgba(0,0,0,0.92);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      animation: fadeIn 0.2s ease;
+    `;
+
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = 'Wall of Fame art';
+    img.style.cssText = `
+      max-width: 90vw; max-height: 90vh;
+      border-radius: 8px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.5);
+      object-fit: contain;
+      cursor: default;
+    `;
+
+    // Close on click outside image
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeLightbox();
+    });
+
+    // Close on Escape
+    const escHandler = (e) => { if (e.key === 'Escape') closeLightbox(); };
+    document.addEventListener('keydown', escHandler);
+
+    overlay.appendChild(img);
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+
+    // Inject fade-in animation if not already present
+    if (!document.getElementById('lightbox-style')) {
+      const style = document.createElement('style');
+      style.id = 'lightbox-style';
+      style.textContent = `@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }`;
+      document.head.appendChild(style);
+    }
+
+    activeLightbox = { overlay, escHandler };
+  }
+
+  window.closeLightbox = function() {
+    if (!activeLightbox) return;
+    document.removeEventListener('keydown', activeLightbox.escHandler);
+    activeLightbox.overlay.remove();
+    document.body.style.overflow = '';
+    activeLightbox = null;
+  };
 })();

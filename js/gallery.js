@@ -93,7 +93,7 @@
       doModeration(file)
         .then(() => {
           uploadCard.innerHTML = '<span class="upload-icon">⏳</span><span class="upload-text">Uploading...</span>';
-          return uploadImage(file);
+          return doUpload(file);
         })
         .then(() => {
           input.value = '';
@@ -102,7 +102,6 @@
           pendingMapUrl = '';
           localStorage.setItem('wrtrs_last_upload', Date.now().toString());
           resetUploadCard(uploadCard);
-          loadGallery();
         })
         .catch((err) => {
           console.error('Upload failed:', err);
@@ -220,6 +219,14 @@
       `;
     }
 
+    async function doUpload(file) {
+      await uploadImage(file);
+      // Force fresh manifest with cache bust after upload
+      const fresh = await fetchManifest(true);
+      fresh.sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
+      renderGallery(fresh);
+    }
+
     async function uploadImage(file) {
       const ext = file.name.split('.').pop() || 'jpg';
       const filename = `${GALLERY_FOLDER}${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
@@ -261,12 +268,11 @@
       });
     }
 
-    async function fetchManifest() {
+    async function fetchManifest(cacheBust) {
       try {
-        const res = await fetch(
-          `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${MANIFEST_FILE}`,
-          { cache: 'no-cache' }
-        );
+        const url = `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${MANIFEST_FILE}` +
+          (cacheBust ? `?t=${Date.now()}` : '');
+        const res = await fetch(url, { cache: 'reload' });
         if (res.ok) {
           const data = await res.json();
           return Array.isArray(data) ? data : [];

@@ -16,7 +16,7 @@
   'use strict';
 
   const SUPABASE_URL = 'https://sfaaxdaldgyairpqwxls.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbG…XWZs';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmYWF4ZGFsZGd5YWlycHF3eGxzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxNjgyNTIsImV4cCI6MjA5OTc0NDI1Mn0.tWMzH_12ZY44MUd9Ju69D_JUfH6CamiVNvH20qiXWZs';
 
   const STORAGE_BUCKET = 'gallery';
   const GALLERY_FOLDER = 'wall-of-fame/';

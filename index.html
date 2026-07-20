@@ -226,6 +226,8 @@
             <span class="upload-icon">📸</span>
             <span class="upload-text">Submit Your Art</span>
             <input type="file" accept="image/*" id="artUpload" />
+            <!-- 🔒 Anti-bot honeypot: hidden from humans, bots fill it -->
+            <input type="text" id="honeypotField" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;" />
           </div>
           <div class="gallery-placeholder">
             <span class="gallery-placeholder-icon">🎨</span>

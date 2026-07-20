@@ -4,6 +4,12 @@
  *
  * Uses an index.json manifest instead of Supabase's broken list endpoint.
  * Falls back to the list endpoint if available (future-proofing).
+ *
+ * Anti-spam:
+ *   - Honeypot field (hidden from humans, bots fill it)
+ *   - Rate limiting: 1 upload per 60 seconds per browser
+ *   - File type validation (images only)
+ *   - File size limit (5MB)
  */
 
 (function() {
@@ -15,6 +21,11 @@
   const STORAGE_BUCKET = 'gallery';
   const GALLERY_FOLDER = 'wall-of-fame/';
   const MANIFEST_FILE = GALLERY_FOLDER + 'index.json';
+
+  // 🔒 Anti-spam
+  const UPLOAD_COOLDOWN_MS = 60 * 1000; // 1 minute between uploads
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+  const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
   let galleryCache = null;
 
@@ -41,16 +52,22 @@
       const file = input.files[0];
       if (!file) return;
 
+      // 🔒 Anti-spam checks
+      const spamError = checkSpam(file);
+      if (spamError) {
+        input.value = '';
+        showStatus(`🚫 ${spamError}`);
+        return;
+      }
+
       const uploadCard = document.getElementById('uploadCard');
       uploadCard.innerHTML = '<span class="upload-icon">⏳</span><span class="upload-text">Uploading...</span>';
 
       uploadImage(file).then((filename) => {
         input.value = '';
-        uploadCard.innerHTML = `
-          <span class="upload-icon">📸</span>
-          <span class="upload-text">Submit Your Art</span>
-          <input type="file" accept="image/*" id="artUpload" style="display:none" />
-        `;
+        // Record this upload time
+        localStorage.setItem('wrtrs_last_upload', Date.now().toString());
+        resetUploadCard(uploadCard);
         galleryCache = null;
         loadGallery();
       }).catch((err) => {
@@ -63,6 +80,55 @@
         `;
       });
     });
+
+    // 🔒 Anti-spam checks
+    function checkSpam(file) {
+      // 1. Honeypot — bots fill hidden fields, humans don't
+      const honeypot = document.getElementById('honeypotField');
+      if (honeypot && honeypot.value.trim() !== '') {
+        console.warn('Honeypot triggered');
+        return 'Security check triggered. If you\'re human, try again.';
+      }
+
+      // 2. File type validation
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        return 'Only JPEG, PNG, GIF, and WebP images allowed.';
+      }
+
+      // 3. File size limit
+      if (file.size > MAX_FILE_SIZE) {
+        return `Image too large (max 5MB). Yours is ${(file.size / 1024 / 1024).toFixed(1)}MB.`;
+      }
+
+      // 4. Rate limiting (localStorage-based)
+      const lastUpload = localStorage.getItem('wrtrs_last_upload');
+      if (lastUpload) {
+        const elapsed = Date.now() - parseInt(lastUpload, 10);
+        if (elapsed < UPLOAD_COOLDOWN_MS) {
+          const waitSeconds = Math.ceil((UPLOAD_COOLDOWN_MS - elapsed) / 1000);
+          return `Please wait ${waitSeconds}s before uploading again.`;
+        }
+      }
+
+      return null; // All checks passed
+    }
+
+    function showStatus(msg) {
+      const uploadCard = document.getElementById('uploadCard');
+      if (!uploadCard) return;
+      uploadCard.innerHTML = `<span class="upload-icon">⚠️</span><span class="upload-text">${msg}</span>`;
+      setTimeout(() => resetUploadCard(uploadCard), 3000);
+    }
+
+    function resetUploadCard(card) {
+      if (!card) card = document.getElementById('uploadCard');
+      if (!card) return;
+      card.innerHTML = `
+        <span class="upload-icon">📸</span>
+        <span class="upload-text">Submit Your Art</span>
+        <input type="file" accept="image/*" id="artUpload" style="display:none" />
+      `;
+    }
 
     async function uploadImage(file) {
       const ext = file.name.split('.').pop() || 'jpg';
@@ -127,7 +193,6 @@
 
     async function loadGallery() {
       try {
-        // Try loading the manifest
         let files = [];
 
         // Try manifest first (our workaround for broken list endpoint)
@@ -158,7 +223,6 @@
 
         if (res.ok) {
           const data = await res.json();
-          // Filter out the manifest file from display
           return (data || []).filter(f => f.name && !f.name.endsWith('index.json'));
         }
       } catch (e) {

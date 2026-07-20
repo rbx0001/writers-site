@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!navigator.geolocation) {
       // No geolocation support — open general search
-      window.open('https://www.google.com/maps/search/graffiti/', '_blank');
+      window.open('https://www.google.com/maps/search/graffiti+street+art/', '_blank');
       return;
     }
 
@@ -22,13 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        const searchUrl = `https://www.google.com/maps/search/graffiti/@${latitude},${longitude},15z`;
+        const searchUrl = `https://www.google.com/maps/search/graffiti+street+art/@${latitude},${longitude},15z`;
         window.open(searchUrl, '_blank');
         btn.textContent = 'Find Graffiti Near Me →';
       },
       () => {
         // Denied or error — fallback to general graffiti search
-        window.open('https://www.google.com/maps/search/graffiti/', '_blank');
+        window.open('https://www.google.com/maps/search/graffiti+street+art/', '_blank');
         btn.textContent = 'Find Graffiti Near Me →';
       },
       { timeout: 5000, enableHighAccuracy: false }

@@ -31,6 +31,7 @@
 
   let pendingCaption = '';
   let pendingArtist = '';
+  let pendingDate = '';
   let pendingMapUrl = '';
   let nsfwModelPromise = null; // null = not loaded yet, promise = loading/loaded
 
@@ -66,6 +67,9 @@
         pendingArtist = artist.value.trim();
       }
 
+      const dt = e.target.closest('#dateField');
+      if (dt) pendingDate = dt.value;
+
       const map = e.target.closest('#mapField');
       if (map) pendingMapUrl = map.value.trim();
     });
@@ -99,6 +103,7 @@
           input.value = '';
           pendingCaption = '';
           pendingArtist = '';
+          pendingDate = '';
           pendingMapUrl = '';
           localStorage.setItem('wrtrs_last_upload', Date.now().toString());
           resetUploadCard(uploadCard);
@@ -253,6 +258,7 @@
         created_at: new Date().toISOString(),
         caption: pendingCaption || '',
         artist: pendingArtist || '',
+        date_taken: pendingDate || '',
         map_url: pendingMapUrl || '',
       });
 
@@ -315,6 +321,7 @@
 
         const caption = file.caption || '';
         const artist = file.artist || '';
+        const dateTaken = file.date_taken || '';
         const mapUrl = file.map_url || '';
 
         const wrapper = document.createElement('div');
@@ -328,7 +335,7 @@
         img.loading = 'lazy';
         wrapper.appendChild(img);
 
-        if (caption || artist || mapUrl) {
+        if (caption || artist || dateTaken || mapUrl) {
           const overlay = document.createElement('div');
           overlay.style.cssText = `
             position: absolute; bottom: 0; left: 0; right: 0;
@@ -340,6 +347,7 @@
 
           if (artist) overlay.innerHTML += `<strong>${escHtml(artist)}</strong><br>`;
           if (caption) overlay.innerHTML += `${escHtml(caption)}<br>`;
+          if (dateTaken) overlay.innerHTML += `<span style="opacity:0.5;font-size:0.65rem;">📅 ${escHtml(dateTaken)}</span><br>`;
           if (mapUrl) overlay.innerHTML += `<span style="opacity:0.6;font-size:0.65rem;">📍 ${escHtml(mapUrl)}</span>`;
 
           wrapper.appendChild(overlay);
@@ -347,7 +355,7 @@
           wrapper.addEventListener('mouseleave', () => { overlay.style.opacity = '0'; });
         }
 
-        wrapper.addEventListener('click', () => openLightbox(url, caption, artist, mapUrl));
+        wrapper.addEventListener('click', () => openLightbox(url, caption, artist, dateTaken, mapUrl));
 
         const uploadCard = document.getElementById('uploadCard');
         uploadCard.insertAdjacentElement('afterend', wrapper);
@@ -364,7 +372,7 @@
   // 🖼️ Lightbox
   let activeLightbox = null;
 
-  function openLightbox(src, caption, artist, mapUrl) {
+  function openLightbox(src, caption, artist, dateTaken, mapUrl) {
     closeLightbox();
 
     const overlay = document.createElement('div');
@@ -408,6 +416,13 @@
       capEl.textContent = caption;
       capEl.style.cssText = 'color: rgba(255,255,255,0.7); font-size: 0.9rem; margin: 0 0 4px; line-height: 1.5;';
       infoArea.appendChild(capEl);
+    }
+
+    if (dateTaken) {
+      const dateEl = document.createElement('p');
+      dateEl.textContent = `📅 ${dateTaken}`;
+      dateEl.style.cssText = 'color: rgba(255,255,255,0.5); font-size: 0.8rem; margin: 0 0 4px;';
+      infoArea.appendChild(dateEl);
     }
 
     if (mapUrl) {

@@ -9,13 +9,14 @@
  *   - Rate limiting (60s per upload)
  *   - File type validation (images only)
  *   - File size limit (5MB)
+ *   - NSFW moderation (client-side via nsfwjs, lazy-loaded only on upload)
  */
 
 (function() {
   'use strict';
 
   const SUPABASE_URL = 'https://sfaaxdaldgyairpqwxls.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmYWF4ZGFsZGd5YWlycHF3eGxzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxNjgyNTIsImV4cCI6MjA5OTc0NDI1Mn0.tWMzH_12ZY44MUd9Ju69D_JUfH6CamiVNvH20qiXWZs';
+  const SUPABASE_ANON_KEY = 'eyJhbG…XWZs';
 
   const STORAGE_BUCKET = 'gallery';
   const GALLERY_FOLDER = 'wall-of-fame/';
@@ -26,10 +27,12 @@
   const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
   const MAX_CAPTION_LENGTH = 120;
   const MAX_ARTIST_LENGTH = 40;
+  const NSFW_THRESHOLD = 0.5;
 
   let pendingCaption = '';
   let pendingArtist = '';
   let pendingMapUrl = '';
+  let nsfwModelPromise = null;
 
   document.addEventListener('DOMContentLoaded', () => {
     const grid = document.querySelector('.gallery-grid-community');
@@ -37,7 +40,6 @@
 
     loadGallery();
 
-    // Click upload card → file picker
     grid.addEventListener('click', (e) => {
       const card = e.target.closest('#uploadCard');
       if (card && !e.target.closest('.upload-extra-btn') && !e.target.closest('.upload-extra-field')) {
@@ -45,7 +47,6 @@
       }
     });
 
-    // Toggle extra info panel
     grid.addEventListener('click', (e) => {
       const btn = e.target.closest('#infoToggle');
       if (btn) {
@@ -55,7 +56,6 @@
       }
     });
 
-    // Track extra fields
     grid.addEventListener('input', (e) => {
       const field = e.target.closest('#captionField');
       if (field) pendingCaption = field.value.trim();
@@ -84,9 +84,17 @@
       }
 
       const uploadCard = document.getElementById('uploadCard');
-      uploadCard.innerHTML = '<span class="upload-icon">⏳</span><span class="upload-text">Uploading...</span>';
+      uploadCard.innerHTML = '<span class="upload-icon">🔍</span><span class="upload-text">Checking image...</span>';
 
-      uploadImage(file)
+      startUpload(file, input, uploadCard);
+    });
+
+    function startUpload(file, input, uploadCard) {
+      doModeration(file)
+        .then(() => {
+          uploadCard.innerHTML = '<span class="upload-icon">⏳</span><span class="upload-text">Uploading...</span>';
+          return uploadImage(file);
+        })
         .then(() => {
           input.value = '';
           pendingCaption = '';
@@ -99,13 +107,73 @@
         .catch((err) => {
           console.error('Upload failed:', err);
           input.value = '';
+          const msg = err.message === 'NSFW_REJECTED'
+            ? 'Image rejected — not appropriate content'
+            : 'Upload failed — try again';
           uploadCard.innerHTML = `
             <span class="upload-icon">❌</span>
-            <span class="upload-text">Upload failed — try again</span>
+            <span class="upload-text">${msg}</span>
             <input type="file" accept="image/*" id="artUpload" style="display:none" />
           `;
         });
-    });
+    }
+
+    async function doModeration(file) {
+      // Load NSFW model lazily (first time only, cached)
+      if (!nsfwModelPromise) {
+        nsfwModelPromise = loadNsfwModel();
+      }
+
+      let model;
+      try {
+        model = await Promise.race([
+          nsfwModelPromise,
+          new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT')), 15000))
+        ]);
+      } catch (e) {
+        console.warn('NSFW model load timed out or failed, allowing upload:', e);
+        return;
+      }
+
+      const blobUrl = URL.createObjectURL(file);
+      const img = new Image();
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = blobUrl;
+      });
+
+      const predictions = await model.classify(img);
+      URL.revokeObjectURL(blobUrl);
+
+      const porn = predictions.find(p => p.className === 'Porn');
+      const hentai = predictions.find(p => p.className === 'Hentai');
+      if ((porn && porn.probability > NSFW_THRESHOLD) ||
+          (hentai && hentai.probability > NSFW_THRESHOLD)) {
+        throw new Error('NSFW_REJECTED');
+      }
+    }
+
+    async function loadNsfwModel() {
+      // Load TF and NSFW library dynamically — only needed for moderation
+      if (typeof tf === 'undefined') {
+        await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js');
+      }
+      if (typeof nsfwjs === 'undefined') {
+        await loadScript('https://cdn.jsdelivr.net/npm/nsfwjs@4.2.0/dist/nsfwjs.min.js');
+      }
+      return nsfwjs.load();
+    }
+
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
 
     function checkSpam(file) {
       const honeypot = document.getElementById('honeypotField');
@@ -310,7 +378,6 @@
     `;
     overlay.appendChild(img);
 
-    // Info below image
     const infoArea = document.createElement('div');
     infoArea.style.cssText = `
       margin-top: 16px; text-align: center;
@@ -348,7 +415,6 @@
 
     overlay.appendChild(infoArea);
 
-    // Close button
     const closeBtn = document.createElement('button');
     closeBtn.textContent = '✕';
     closeBtn.style.cssText = `

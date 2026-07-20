@@ -1,6 +1,9 @@
 /**
  * WRITERS — Wall of Fame Gallery
  * Images stored in Supabase Storage (REST API, no SDK needed)
+ *
+ * Uses an index.json manifest instead of Supabase's broken list endpoint.
+ * Falls back to the list endpoint if available (future-proofing).
  */
 
 (function() {
@@ -11,6 +14,7 @@
 
   const STORAGE_BUCKET = 'gallery';
   const GALLERY_FOLDER = 'wall-of-fame/';
+  const MANIFEST_FILE = GALLERY_FOLDER + 'index.json';
 
   let galleryCache = null;
 
@@ -18,7 +22,6 @@
     const grid = document.querySelector('.gallery-grid-community');
     if (!grid) return;
 
-    // Load gallery on page load
     loadGallery();
 
     // Delegate click to file input
@@ -41,7 +44,7 @@
       const uploadCard = document.getElementById('uploadCard');
       uploadCard.innerHTML = '<span class="upload-icon">⏳</span><span class="upload-text">Uploading...</span>';
 
-      uploadImage(file).then(() => {
+      uploadImage(file).then((filename) => {
         input.value = '';
         uploadCard.innerHTML = `
           <span class="upload-icon">📸</span>
@@ -65,6 +68,7 @@
       const ext = file.name.split('.').pop() || 'jpg';
       const filename = `${GALLERY_FOLDER}${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
+      // 1. Upload the image
       const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/${STORAGE_BUCKET}/${filename}`, {
         method: 'POST',
         headers: {
@@ -76,14 +80,73 @@
       });
 
       if (!uploadRes.ok) {
-        const errText = await uploadText();
+        const errText = await uploadRes.text();
         throw new Error(`Storage upload failed: ${uploadRes.status} ${errText}`);
       }
+
+      // 2. Update the manifest: fetch existing, add new entry, write back
+      const manifest = await fetchManifest();
+      manifest.unshift({
+        name: filename,
+        created_at: new Date().toISOString(),
+      });
+
+      const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+      const manifestRes = await fetch(`${SUPABASE_URL}/storage/v1/object/${STORAGE_BUCKET}/${MANIFEST_FILE}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+          'x-upsert': 'true',
+        },
+        body: manifestBlob,
+      });
+
+      if (!manifestRes.ok) {
+        console.warn('Manifest update warning:', manifestRes.status);
+      }
+
+      return filename;
+    }
+
+    async function fetchManifest() {
+      try {
+        const res = await fetch(
+          `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${MANIFEST_FILE}`,
+          { cache: 'no-cache' }
+        );
+        if (res.ok) {
+          const data = await res.json();
+          return Array.isArray(data) ? data : [];
+        }
+      } catch (e) {
+        // No manifest yet — first upload
+      }
+      return [];
     }
 
     async function loadGallery() {
       try {
-        // List all files in the gallery folder
+        // Try loading the manifest
+        let files = [];
+
+        // Try manifest first (our workaround for broken list endpoint)
+        const manifest = await fetchManifest();
+        if (manifest.length > 0) {
+          files = manifest;
+        } else {
+          // Fallback: try Supabase list endpoint (in case they fix it)
+          files = await tryEndpoint();
+        }
+
+        renderGallery(files);
+      } catch (err) {
+        console.error('Failed to load gallery:', err);
+      }
+    }
+
+    async function tryEndpoint() {
+      try {
         const res = await fetch(
           `${SUPABASE_URL}/storage/v1/object/list/${STORAGE_BUCKET}?prefix=${GALLERY_FOLDER}&limit=100&sortBy=created_at&sortOrder=desc`,
           {
@@ -93,19 +156,15 @@
           }
         );
 
-        if (!res.ok) {
-          if (res.status === 404) {
-            renderGallery([]);
-            return;
-          }
-          throw new Error(`List failed: ${res.status}`);
+        if (res.ok) {
+          const data = await res.json();
+          // Filter out the manifest file from display
+          return (data || []).filter(f => f.name && !f.name.endsWith('index.json'));
         }
-
-        const files = await res.json();
-        renderGallery(files || []);
-      } catch (err) {
-        console.error('Failed to load gallery:', err);
+      } catch (e) {
+        // Endpoint unavailable
       }
+      return [];
     }
 
     function renderGallery(files) {
@@ -131,9 +190,10 @@
 
       // Add each image
       files.forEach((file) => {
-        if (!file.name) return;
+        const name = file.name;
+        if (!name) return;
 
-        const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${file.name}`;
+        const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${name}`;
 
         const wrapper = document.createElement('div');
         wrapper.className = 'gallery-item-wrtrs';

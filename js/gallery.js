@@ -2,14 +2,15 @@
  * WRITERS — Wall of Fame Gallery
  * Images stored in Supabase Storage (REST API, no SDK needed)
  *
- * Uses an index.json manifest instead of Supabase's broken list endpoint.
- * Falls back to the list endpoint if available (future-proofing).
+ * Uses a shared index.json manifest. Each upload updates the manifest
+ * (RLS now allows anon key to upsert in wall-of-fame/).
  *
  * Anti-spam:
  *   - Honeypot field (hidden from humans, bots fill it)
  *   - Rate limiting: 1 upload per 60 seconds per browser
  *   - File type validation (images only)
  *   - File size limit (5MB)
+ *   - Caption length limit (120 chars)
  */
 
 (function() {
@@ -28,8 +29,7 @@
   const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
   const MAX_CAPTION_LENGTH = 120;
 
-  let galleryCache = null;
-  let pendingCaption = ''; // Caption stored while user picks a file
+  let pendingCaption = '';
 
   document.addEventListener('DOMContentLoaded', () => {
     const grid = document.querySelector('.gallery-grid-community');
@@ -37,17 +37,15 @@
 
     loadGallery();
 
-    // Delegate click to file input
+    // Click upload card → open file picker (unless clicking caption controls)
     grid.addEventListener('click', (e) => {
       const uploadCard = e.target.closest('#uploadCard');
-      // Don't trigger if they clicked the caption input
       if (uploadCard && !e.target.closest('#captionInput') && !e.target.closest('#captionToggle')) {
-        const input = document.getElementById('artUpload');
-        if (input) input.click();
+        document.getElementById('artUpload')?.click();
       }
     });
 
-    // Caption toggle
+    // Toggle caption input
     grid.addEventListener('click', (e) => {
       const toggle = e.target.closest('#captionToggle');
       if (toggle) {
@@ -57,13 +55,10 @@
       }
     });
 
-    // Live update pending caption
+    // Track caption as user types
     grid.addEventListener('input', (e) => {
       const field = e.target.closest('#captionInput');
       if (field) {
-        if (field.value.length > MAX_CAPTION_LENGTH) {
-          field.value = field.value.slice(0, MAX_CAPTION_LENGTH);
-        }
         pendingCaption = field.value.trim();
       }
     });
@@ -71,12 +66,9 @@
     // Upload handler
     grid.addEventListener('change', (e) => {
       const input = e.target.closest('#artUpload');
-      if (!input) return;
+      if (!input?.files?.[0]) return;
 
       const file = input.files[0];
-      if (!file) return;
-
-      // 🔒 Anti-spam checks
       const spamError = checkSpam(file);
       if (spamError) {
         input.value = '';
@@ -87,44 +79,42 @@
       const uploadCard = document.getElementById('uploadCard');
       uploadCard.innerHTML = '<span class="upload-icon">⏳</span><span class="upload-text">Uploading...</span>';
 
-      uploadImage(file).then((filename) => {
-        input.value = '';
-        pendingCaption = '';
-        localStorage.setItem('wrtrs_last_upload', Date.now().toString());
-        resetUploadCard(uploadCard);
-        galleryCache = null;
-        loadGallery();
-      }).catch((err) => {
-        console.error('Upload failed:', err);
-        input.value = '';
-        uploadCard.innerHTML = `
-          <span class="upload-icon">❌</span>
-          <span class="upload-text">Upload failed — try again</span>
-          <input type="file" accept="image/*" id="artUpload" style="display:none" />
-        `;
-      });
+      uploadImage(file)
+        .then(() => {
+          input.value = '';
+          pendingCaption = '';
+          localStorage.setItem('wrtrs_last_upload', Date.now().toString());
+          resetUploadCard(uploadCard);
+          loadGallery();
+        })
+        .catch((err) => {
+          console.error('Upload failed:', err);
+          input.value = '';
+          uploadCard.innerHTML = `
+            <span class="upload-icon">❌</span>
+            <span class="upload-text">Upload failed — try again</span>
+            <input type="file" accept="image/*" id="artUpload" style="display:none" />
+          `;
+        });
     });
 
     // 🔒 Anti-spam checks
     function checkSpam(file) {
-      // 1. Honeypot
+      // Honeypot
       const honeypot = document.getElementById('honeypotField');
       if (honeypot && honeypot.value.trim() !== '') {
         console.warn('Honeypot triggered');
-        return 'Security check triggered. If you\'re human, try again.';
+        return 'Security check triggered. If human, try again.';
       }
-
-      // 2. File type
+      // File type
       if (!ALLOWED_TYPES.includes(file.type)) {
         return 'Only JPEG, PNG, GIF, and WebP images allowed.';
       }
-
-      // 3. File size
+      // File size
       if (file.size > MAX_FILE_SIZE) {
         return `Image too large (max 5MB). Yours is ${(file.size / 1024 / 1024).toFixed(1)}MB.`;
       }
-
-      // 4. Rate limit
+      // Rate limit
       const lastUpload = localStorage.getItem('wrtrs_last_upload');
       if (lastUpload) {
         const elapsed = Date.now() - parseInt(lastUpload, 10);
@@ -133,15 +123,14 @@
           return `Please wait ${waitSeconds}s before uploading again.`;
         }
       }
-
       return null;
     }
 
     function showStatus(msg) {
-      const uploadCard = document.getElementById('uploadCard');
-      if (!uploadCard) return;
-      uploadCard.innerHTML = `<span class="upload-icon">⚠️</span><span class="upload-text">${msg}</span>`;
-      setTimeout(() => resetUploadCard(uploadCard), 3000);
+      const card = document.getElementById('uploadCard');
+      if (!card) return;
+      card.innerHTML = `<span class="upload-icon">⚠️</span><span class="upload-text">${msg}</span>`;
+      setTimeout(() => resetUploadCard(card), 3000);
     }
 
     function resetUploadCard(card) {
@@ -157,6 +146,7 @@
     async function uploadImage(file) {
       const ext = file.name.split('.').pop() || 'jpg';
       const filename = `${GALLERY_FOLDER}${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${filename}`;
 
       // 1. Upload the image
       const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/${STORAGE_BUCKET}/${filename}`, {
@@ -174,16 +164,16 @@
         throw new Error(`Storage upload failed: ${uploadRes.status} ${errText}`);
       }
 
-      // 2. Update the manifest with caption
+      // 2. Update the shared manifest
       const manifest = await fetchManifest();
       manifest.unshift({
-        name: filename,
+        url: publicUrl,
         created_at: new Date().toISOString(),
         caption: pendingCaption || '',
       });
 
       const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-      const manifestRes = await fetch(`${SUPABASE_URL}/storage/v1/object/${STORAGE_BUCKET}/${MANIFEST_FILE}`, {
+      await fetch(`${SUPABASE_URL}/storage/v1/object/${STORAGE_BUCKET}/${MANIFEST_FILE}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
@@ -192,12 +182,6 @@
         },
         body: manifestBlob,
       });
-
-      if (!manifestRes.ok) {
-        console.warn('Manifest update warning:', manifestRes.status);
-      }
-
-      return filename;
     }
 
     async function fetchManifest() {
@@ -210,52 +194,22 @@
           const data = await res.json();
           return Array.isArray(data) ? data : [];
         }
-      } catch (e) {
-        // No manifest yet
-      }
+      } catch (e) {}
       return [];
     }
 
     async function loadGallery() {
       try {
-        let files = [];
-
-        const manifest = await fetchManifest();
-        if (manifest.length > 0) {
-          files = manifest;
-        } else {
-          files = await tryEndpoint();
-        }
-
+        const files = await fetchManifest();
+        files.sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
         renderGallery(files);
       } catch (err) {
         console.error('Failed to load gallery:', err);
       }
     }
 
-    async function tryEndpoint() {
-      try {
-        const res = await fetch(
-          `${SUPABASE_URL}/storage/v1/object/list/${STORAGE_BUCKET}?prefix=${GALLERY_FOLDER}&limit=100&sortBy=created_at&sortOrder=desc`,
-          {
-            headers: {
-              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-            },
-          }
-        );
-
-        if (res.ok) {
-          const data = await res.json();
-          return (data || []).filter(f => f.name && !f.name.endsWith('index.json'));
-        }
-      } catch (e) {
-        // Endpoint unavailable
-      }
-      return [];
-    }
-
     function renderGallery(files) {
-      // Remove old gallery items
+      // Remove old items
       grid.querySelectorAll('.gallery-item-wrtrs').forEach(el => el.remove());
 
       const placeholders = grid.querySelectorAll('.gallery-placeholder');
@@ -272,15 +226,11 @@
         return;
       }
 
-      // Remove placeholders
       placeholders.forEach(el => el.remove());
 
-      // Add each image
       files.forEach((file) => {
-        const name = file.name;
-        if (!name) return;
-
-        const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${name}`;
+        const url = file.url;
+        if (!url) return;
         const caption = file.caption || '';
 
         const wrapper = document.createElement('div');
@@ -288,14 +238,13 @@
         wrapper.style.cssText = 'position: relative; height: 200px; overflow: hidden; border-radius: 12px;';
 
         const img = document.createElement('img');
-        img.src = publicUrl;
+        img.src = url;
         img.alt = caption || 'Wall of Fame art';
         img.style.cssText = 'width: 100%; height: 100%; object-fit: cover; border-radius: 12px; display: block;';
         img.loading = 'lazy';
 
         wrapper.appendChild(img);
 
-        // Caption overlay on hover
         if (caption) {
           const capEl = document.createElement('div');
           capEl.textContent = caption;
@@ -311,8 +260,7 @@
           wrapper.addEventListener('mouseleave', () => { capEl.style.opacity = '0'; });
         }
 
-        // Click to open lightbox
-        wrapper.addEventListener('click', () => openLightbox(publicUrl, caption));
+        wrapper.addEventListener('click', () => openLightbox(url, caption));
 
         const uploadCard = document.getElementById('uploadCard');
         uploadCard.insertAdjacentElement('afterend', wrapper);
@@ -347,10 +295,8 @@
       object-fit: contain;
       cursor: default;
     `;
-
     overlay.appendChild(img);
 
-    // Caption below the image in lightbox
     if (caption) {
       const capEl = document.createElement('p');
       capEl.textContent = caption;
@@ -363,7 +309,6 @@
       overlay.appendChild(capEl);
     }
 
-    // Close button
     const closeBtn = document.createElement('button');
     closeBtn.textContent = '✕';
     closeBtn.style.cssText = `
@@ -376,10 +321,7 @@
     closeBtn.addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
     overlay.appendChild(closeBtn);
 
-    // Close on click outside image
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) closeLightbox();
-    });
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeLightbox(); });
 
     const escHandler = (e) => { if (e.key === 'Escape') closeLightbox(); };
     document.addEventListener('keydown', escHandler);

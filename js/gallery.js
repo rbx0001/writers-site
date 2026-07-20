@@ -2,15 +2,13 @@
  * WRITERS — Wall of Fame Gallery
  * Images stored in Supabase Storage (REST API, no SDK needed)
  *
- * Uses a shared index.json manifest. Each upload updates the manifest
- * (RLS now allows anon key to upsert in wall-of-fame/).
+ * Uses a shared index.json manifest with upsert support.
  *
  * Anti-spam:
- *   - Honeypot field (hidden from humans, bots fill it)
- *   - Rate limiting: 1 upload per 60 seconds per browser
+ *   - Honeypot field
+ *   - Rate limiting (60s per upload)
  *   - File type validation (images only)
  *   - File size limit (5MB)
- *   - Caption length limit (120 chars)
  */
 
 (function() {
@@ -23,13 +21,15 @@
   const GALLERY_FOLDER = 'wall-of-fame/';
   const MANIFEST_FILE = GALLERY_FOLDER + 'index.json';
 
-  // 🔒 Anti-spam
   const UPLOAD_COOLDOWN_MS = 60 * 1000;
   const MAX_FILE_SIZE = 5 * 1024 * 1024;
   const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
   const MAX_CAPTION_LENGTH = 120;
+  const MAX_ARTIST_LENGTH = 40;
 
   let pendingCaption = '';
+  let pendingArtist = '';
+  let pendingMapUrl = '';
 
   document.addEventListener('DOMContentLoaded', () => {
     const grid = document.querySelector('.gallery-grid-community');
@@ -37,30 +37,37 @@
 
     loadGallery();
 
-    // Click upload card → open file picker (unless clicking caption controls)
+    // Click upload card → file picker
     grid.addEventListener('click', (e) => {
-      const uploadCard = e.target.closest('#uploadCard');
-      if (uploadCard && !e.target.closest('#captionInput') && !e.target.closest('#captionToggle')) {
+      const card = e.target.closest('#uploadCard');
+      if (card && !e.target.closest('.upload-extra-btn') && !e.target.closest('.upload-extra-field')) {
         document.getElementById('artUpload')?.click();
       }
     });
 
-    // Toggle caption input
+    // Toggle extra info panel
     grid.addEventListener('click', (e) => {
-      const toggle = e.target.closest('#captionToggle');
-      if (toggle) {
+      const btn = e.target.closest('#infoToggle');
+      if (btn) {
         e.stopPropagation();
-        const field = document.getElementById('captionInput');
-        if (field) field.style.display = field.style.display === 'none' ? 'block' : 'none';
+        const panel = document.getElementById('infoPanel');
+        if (panel) panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
       }
     });
 
-    // Track caption as user types
+    // Track extra fields
     grid.addEventListener('input', (e) => {
-      const field = e.target.closest('#captionInput');
-      if (field) {
-        pendingCaption = field.value.trim();
+      const field = e.target.closest('#captionField');
+      if (field) pendingCaption = field.value.trim();
+
+      const artist = e.target.closest('#artistField');
+      if (artist) {
+        if (artist.value.length > MAX_ARTIST_LENGTH) artist.value = artist.value.slice(0, MAX_ARTIST_LENGTH);
+        pendingArtist = artist.value.trim();
       }
+
+      const map = e.target.closest('#mapField');
+      if (map) pendingMapUrl = map.value.trim();
     });
 
     // Upload handler
@@ -83,6 +90,8 @@
         .then(() => {
           input.value = '';
           pendingCaption = '';
+          pendingArtist = '';
+          pendingMapUrl = '';
           localStorage.setItem('wrtrs_last_upload', Date.now().toString());
           resetUploadCard(uploadCard);
           loadGallery();
@@ -98,29 +107,23 @@
         });
     });
 
-    // 🔒 Anti-spam checks
     function checkSpam(file) {
-      // Honeypot
       const honeypot = document.getElementById('honeypotField');
       if (honeypot && honeypot.value.trim() !== '') {
         console.warn('Honeypot triggered');
         return 'Security check triggered. If human, try again.';
       }
-      // File type
       if (!ALLOWED_TYPES.includes(file.type)) {
         return 'Only JPEG, PNG, GIF, and WebP images allowed.';
       }
-      // File size
       if (file.size > MAX_FILE_SIZE) {
         return `Image too large (max 5MB). Yours is ${(file.size / 1024 / 1024).toFixed(1)}MB.`;
       }
-      // Rate limit
       const lastUpload = localStorage.getItem('wrtrs_last_upload');
       if (lastUpload) {
         const elapsed = Date.now() - parseInt(lastUpload, 10);
         if (elapsed < UPLOAD_COOLDOWN_MS) {
-          const waitSeconds = Math.ceil((UPLOAD_COOLDOWN_MS - elapsed) / 1000);
-          return `Please wait ${waitSeconds}s before uploading again.`;
+          return `Please wait ${Math.ceil((UPLOAD_COOLDOWN_MS - elapsed) / 1000)}s before uploading again.`;
         }
       }
       return null;
@@ -148,7 +151,6 @@
       const filename = `${GALLERY_FOLDER}${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
       const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${filename}`;
 
-      // 1. Upload the image
       const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/${STORAGE_BUCKET}/${filename}`, {
         method: 'POST',
         headers: {
@@ -164,15 +166,16 @@
         throw new Error(`Storage upload failed: ${uploadRes.status} ${errText}`);
       }
 
-      // 2. Update the shared manifest
       const manifest = await fetchManifest();
       manifest.unshift({
         url: publicUrl,
         created_at: new Date().toISOString(),
         caption: pendingCaption || '',
+        artist: pendingArtist || '',
+        map_url: pendingMapUrl || '',
       });
 
-      const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+      const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
       await fetch(`${SUPABASE_URL}/storage/v1/object/${STORAGE_BUCKET}/${MANIFEST_FILE}`, {
         method: 'POST',
         headers: {
@@ -180,7 +183,7 @@
           'Content-Type': 'application/json',
           'x-upsert': 'true',
         },
-        body: manifestBlob,
+        body: blob,
       });
     }
 
@@ -209,9 +212,7 @@
     }
 
     function renderGallery(files) {
-      // Remove old items
       grid.querySelectorAll('.gallery-item-wrtrs').forEach(el => el.remove());
-
       const placeholders = grid.querySelectorAll('.gallery-placeholder');
 
       if (files.length === 0) {
@@ -231,7 +232,10 @@
       files.forEach((file) => {
         const url = file.url;
         if (!url) return;
+
         const caption = file.caption || '';
+        const artist = file.artist || '';
+        const mapUrl = file.map_url || '';
 
         const wrapper = document.createElement('div');
         wrapper.className = 'gallery-item-wrtrs';
@@ -242,36 +246,45 @@
         img.alt = caption || 'Wall of Fame art';
         img.style.cssText = 'width: 100%; height: 100%; object-fit: cover; border-radius: 12px; display: block;';
         img.loading = 'lazy';
-
         wrapper.appendChild(img);
 
-        if (caption) {
-          const capEl = document.createElement('div');
-          capEl.textContent = caption;
-          capEl.style.cssText = `
+        if (caption || artist || mapUrl) {
+          const overlay = document.createElement('div');
+          overlay.style.cssText = `
             position: absolute; bottom: 0; left: 0; right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            color: #fff; padding: 24px 10px 8px; font-size: 0.75rem;
-            line-height: 1.3; opacity: 0; transition: opacity 0.2s;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
+            color: #fff; padding: 28px 10px 8px; font-size: 0.75rem;
+            line-height: 1.4; opacity: 0; transition: opacity 0.2s;
             pointer-events: none;
           `;
-          wrapper.appendChild(capEl);
-          wrapper.addEventListener('mouseenter', () => { capEl.style.opacity = '1'; });
-          wrapper.addEventListener('mouseleave', () => { capEl.style.opacity = '0'; });
+
+          if (artist) overlay.innerHTML += `<strong>${escHtml(artist)}</strong><br>`;
+          if (caption) overlay.innerHTML += `${escHtml(caption)}<br>`;
+          if (mapUrl) overlay.innerHTML += `<span style="opacity:0.6;font-size:0.65rem;">📍 ${escHtml(mapUrl)}</span>`;
+
+          wrapper.appendChild(overlay);
+          wrapper.addEventListener('mouseenter', () => { overlay.style.opacity = '1'; });
+          wrapper.addEventListener('mouseleave', () => { overlay.style.opacity = '0'; });
         }
 
-        wrapper.addEventListener('click', () => openLightbox(url, caption));
+        wrapper.addEventListener('click', () => openLightbox(url, caption, artist, mapUrl));
 
         const uploadCard = document.getElementById('uploadCard');
         uploadCard.insertAdjacentElement('afterend', wrapper);
       });
+    }
+
+    function escHtml(s) {
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
     }
   });
 
   // 🖼️ Lightbox
   let activeLightbox = null;
 
-  function openLightbox(src, caption) {
+  function openLightbox(src, caption, artist, mapUrl) {
     closeLightbox();
 
     const overlay = document.createElement('div');
@@ -289,7 +302,7 @@
     img.src = src;
     img.alt = caption || 'Wall of Fame art';
     img.style.cssText = `
-      max-width: 90vw; max-height: 80vh;
+      max-width: 90vw; max-height: 75vh;
       border-radius: 8px;
       box-shadow: 0 0 40px rgba(0,0,0,0.5);
       object-fit: contain;
@@ -297,18 +310,45 @@
     `;
     overlay.appendChild(img);
 
+    // Info below image
+    const infoArea = document.createElement('div');
+    infoArea.style.cssText = `
+      margin-top: 16px; text-align: center;
+      max-width: 600px; cursor: default;
+    `;
+
+    if (artist) {
+      const nameEl = document.createElement('p');
+      nameEl.textContent = `✍️ ${artist}`;
+      nameEl.style.cssText = 'color: #fff; font-size: 1rem; font-weight: 600; margin: 0 0 4px;';
+      infoArea.appendChild(nameEl);
+    }
+
     if (caption) {
       const capEl = document.createElement('p');
       capEl.textContent = caption;
-      capEl.style.cssText = `
-        color: rgba(255,255,255,0.7); margin-top: 16px;
-        font-size: 0.9rem; text-align: center;
-        max-width: 600px; line-height: 1.5;
-        cursor: default;
-      `;
-      overlay.appendChild(capEl);
+      capEl.style.cssText = 'color: rgba(255,255,255,0.7); font-size: 0.9rem; margin: 0 0 4px; line-height: 1.5;';
+      infoArea.appendChild(capEl);
     }
 
+    if (mapUrl) {
+      const link = document.createElement('a');
+      link.href = mapUrl;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = '📍 View on Google Maps';
+      link.style.cssText = `
+        color: var(--accent, #ff6b35); font-size: 0.8rem;
+        text-decoration: none; display: inline-block; margin-top: 4px;
+      `;
+      link.addEventListener('mouseenter', () => { link.style.textDecoration = 'underline'; });
+      link.addEventListener('mouseleave', () => { link.style.textDecoration = 'none'; });
+      infoArea.appendChild(link);
+    }
+
+    overlay.appendChild(infoArea);
+
+    // Close button
     const closeBtn = document.createElement('button');
     closeBtn.textContent = '✕';
     closeBtn.style.cssText = `

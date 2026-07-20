@@ -32,7 +32,7 @@
   let pendingCaption = '';
   let pendingArtist = '';
   let pendingMapUrl = '';
-  let nsfwModelPromise = null;
+  let nsfwModelPromise = null; // null = not loaded yet, promise = loading/loaded
 
   document.addEventListener('DOMContentLoaded', () => {
     const grid = document.querySelector('.gallery-grid-community');
@@ -119,50 +119,56 @@
     }
 
     async function doModeration(file) {
-      // Load NSFW model lazily (first time only, cached)
-      if (!nsfwModelPromise) {
-        nsfwModelPromise = loadNsfwModel();
-      }
-
-      let model;
+      // Attempt NSFW check — if anything fails, allow the upload
       try {
-        model = await Promise.race([
-          nsfwModelPromise,
-          new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT')), 15000))
-        ]);
-      } catch (e) {
-        console.warn('NSFW model load timed out or failed, allowing upload:', e);
-        return;
-      }
+        // Reset failed promise so we retry
+        if (nsfwModelPromise === null) {
+          nsfwModelPromise = loadNsfwModelWithTimeout();
+        }
+        const model = await nsfwModelPromise;
 
-      const blobUrl = URL.createObjectURL(file);
-      const img = new Image();
-      await new Promise((resolve, reject) => {
-        img.onload = resolve;
-        img.onerror = reject;
-        img.src = blobUrl;
-      });
+        const blobUrl = URL.createObjectURL(file);
+        const img = await new Promise((resolve, reject) => {
+          const i = new Image();
+          i.onload = () => resolve(i);
+          i.onerror = reject;
+          i.src = blobUrl;
+        });
 
-      const predictions = await model.classify(img);
-      URL.revokeObjectURL(blobUrl);
+        const predictions = await model.classify(img);
+        URL.revokeObjectURL(blobUrl);
 
-      const porn = predictions.find(p => p.className === 'Porn');
-      const hentai = predictions.find(p => p.className === 'Hentai');
-      if ((porn && porn.probability > NSFW_THRESHOLD) ||
-          (hentai && hentai.probability > NSFW_THRESHOLD)) {
-        throw new Error('NSFW_REJECTED');
+        const porn = predictions.find(p => p.className === 'Porn');
+        const hentai = predictions.find(p => p.className === 'Hentai');
+        if ((porn && porn.probability > NSFW_THRESHOLD) ||
+            (hentai && hentai.probability > NSFW_THRESHOLD)) {
+          throw new Error('NSFW_REJECTED');
+        }
+      } catch (err) {
+        if (err.message === 'NSFW_REJECTED') throw err;
+        // Reset promise so we retry next time
+        nsfwModelPromise = null;
+        console.warn('NSFW check failed, allowing upload:', err);
       }
     }
 
-    async function loadNsfwModel() {
-      // Load TF and NSFW library dynamically — only needed for moderation
-      if (typeof tf === 'undefined') {
-        await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js');
-      }
-      if (typeof nsfwjs === 'undefined') {
-        await loadScript('https://cdn.jsdelivr.net/npm/nsfwjs@4.2.0/dist/nsfwjs.min.js');
-      }
-      return nsfwjs.load();
+    async function loadNsfwModelWithTimeout() {
+      // 30s timeout for the full download + model init (~5-10MB total)
+      const timeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('TIMEOUT')), 30000)
+      );
+
+      const load = (async () => {
+        if (typeof tf === 'undefined') {
+          await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js');
+        }
+        if (typeof nsfwjs === 'undefined') {
+          await loadScript('https://cdn.jsdelivr.net/npm/nsfwjs@4.2.0/dist/nsfwjs.min.js');
+        }
+        return nsfwjs.load();
+      })();
+
+      return Promise.race([load, timeout]);
     }
 
     function loadScript(src) {

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WRITERS — Opening app…</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/extras.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;700;800;900&family=Rubik+Spray+Paint&display=swap" rel="stylesheet" />
+  <style>
+    body { background: #0d0d0d; color: #e0e0e0; font-family: 'Inter', sans-serif; }
+    .cb-wrap { max-width: 520px; margin: 0 auto; padding: 5rem 1.5rem; text-align: center; }
+    .cb-wrap h1 { font-size: 2rem; color: #FF6B35; font-family: 'Bangers', cursive; letter-spacing: 1px; }
+    .cb-logo { width: 96px; height: 96px; border-radius: 22px; margin: 0 auto 1.5rem; overflow: hidden; }
+    .cb-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .cb-redirect { margin-top: 2rem; font-size: 0.95rem; color: #999; }
+    .cb-btn {
+      display: inline-block; margin-top: 1.25rem; padding: 0.8rem 1.6rem;
+      background: #FF6B35; color: #fff; font-weight: 700; border-radius: 10px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <main class="cb-wrap">
+    <div class="cb-logo"><img src="writers-logo.jpg" alt="WRITERS" /></div>
+    <h1>Opening WRITERS…</h1>
+    <p>If the app doesn't open automatically, tap the button below.</p>
+    <a href="writersapp://callback" class="cb-btn">Open in WRITERS</a>
+    <p class="cb-redirect">This window can be closed once the app opens.</p>
+  </main>
+
+  <script>
+    // Attempt to hand the callback straight back into the app via both the
+    // custom scheme (writersapp://callback) and the HTTPS App Link, preserving
+    // the full query string (Supabase PKCE ?code=...) so the exchange works.
+    (function () {
+      var query = window.location.search; // e.g. ?code=...
+      var appUrl = 'writersapp://callback' + query;
+
+      function openApp() {
+        // Android custom-scheme deep link. If the app is installed and its
+        // intent-filter matches, this launches it with the PKCE code intact.
+        window.location.href = appUrl;
+        // Fallback safety: if the app is not installed, the 404/error page
+        // would show — so surface a hint instead.
+        setTimeout(function () {
+          var hint = document.getElementById('noApp');
+          if (hint) hint.style.display = 'block';
+        }, 2500);
+      }
+
+      openApp();
+    })();
+  </script>
+
+  <p id="noApp" style="display:none; margin-top:2rem; color:#FF6B35; font-weight:600;">
+    The WRITERS app isn't installed or couldn't be opened. Install it from the
+    <a href="https://play.google.com/store/apps/details?id=com.writers.writers_app" style="color:#FF6B35;">Google Play Store</a>,
+    then request a new reset link.
+  </p>
+</body>
+</html>

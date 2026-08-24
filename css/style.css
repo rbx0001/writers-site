@@ -324,6 +324,18 @@ img { max-width: 100%; height: auto; }
   border-color: var(--accent);
 }
 
+.btn-app {
+  background: linear-gradient(135deg, #34d399, #10b981);
+  color: #06281d;
+  border-color: #34d399;
+}
+
+.btn-app:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(52, 211, 153, 0.4);
+  color: #06281d;
+}
+
 .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 30px rgba(255, 107, 53, 0.35);

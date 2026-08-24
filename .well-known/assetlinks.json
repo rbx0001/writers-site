@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.writers.writers_app",
+      "sha256_cert_fingerprints": [
+        "C3:2F:B8:9D:B0:FA:AE:86:42:BA:F7:25:59:14:D7:1B:C5:9B:C0:AF:F9:91:93:5B:FB:E2:96:41:62:A9:A1:6B"
+      ]
+    }
+  }
+]

@@ -148,23 +148,6 @@ img { max-width: 100%; height: auto; }
   border-color: var(--accent);
 }
 
-.app-link {
-  background: var(--accent);
-  border: 1px solid var(--accent);
-  border-radius: 6px;
-  padding: 7px 16px !important;
-  font-size: 0.8rem !important;
-  font-weight: 700 !important;
-  color: #0a0a0a !important;
-}
-
-.app-link:hover {
-  background: var(--accent2);
-  border-color: var(--accent2);
-}
-
-.app-link::after { display: none; }
-
 .nav-toggle {
   display: none;
   background: none;
@@ -1133,12 +1116,6 @@ img { max-width: 100%; height: auto; }
   .nav-link:last-child { border-bottom: none; }
 
   .trench-link {
-    margin-top: 8px;
-    text-align: center;
-    display: block;
-  }
-
-  .app-link {
     margin-top: 8px;
     text-align: center;
     display: block;

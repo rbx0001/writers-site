@@ -480,6 +480,14 @@ img { max-width: 100%; height: auto; }
   color: var(--light);
 }
 
+.token-card-desc {
+  color: var(--text-secondary, rgba(255, 255, 255, 0.7));
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  max-width: 720px;
+}
+
 .token-info-row {
   display: flex;
   justify-content: space-between;

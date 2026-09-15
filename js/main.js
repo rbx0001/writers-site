@@ -74,23 +74,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }, observerOptions);
 
   // Observe all token cards, roadmap phases, merch cards, community cards
-  document.querySelectorAll('.token-card, .roadmap-phase, .merch-card, .community-card, .newsletter').forEach(el => {
+  document.querySelectorAll('.token-card, .roadmap-phase, .merch-card, .community-card').forEach(el => {
     el.classList.add('fade-in');
     observer.observe(el);
   });
-
-  // ======== Newsletter Form ========
-  const newsletterForm = document.getElementById('newsletterForm');
-  if (newsletterForm) {
-    newsletterForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const input = newsletterForm.querySelector('input[type="email"]');
-      if (input && input.value) {
-        showToast('Thanks, writer! 📬 We\'ll be in touch.');
-        input.value = '';
-      }
-    });
-  }
 
   // ======== Graffiti Canvas Background ========
   const canvas = document.createElement('canvas');

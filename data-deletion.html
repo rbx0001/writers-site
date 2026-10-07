@@ -4,34 +4,89 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Request Data Deletion — WRITERS</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/extras.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;700;800;900&family=Rubik+Spray+Paint&display=swap" rel="stylesheet" />
+  <meta name="description" content="Request deletion of your WRITERS account and associated personal data." />
+  <meta name="theme-color" content="#070706" />
+  <link rel="icon" type="image/jpeg" href="assets/writers-icon.jpg" />
+  <link rel="apple-touch-icon" href="assets/writers-icon.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <script>document.documentElement.classList.add('js');window.addEventListener('load',function(){setTimeout(function(){if(!window.__writersReady)document.documentElement.classList.remove('js');},1500);});</script>
 </head>
 <body>
-  <main class="container" style="max-width: 860px; margin: 0 auto; padding: 3rem 1.5rem;">
-    <a href="index.html" style="color:#FF6B35; text-decoration:none;">&larr; Back to WRITERS</a>
-    <h1 style="font-size:2.4rem; color:#FF6B35;">Request Data Deletion</h1>
+  <div class="grain" aria-hidden="true"></div>
 
-    <p>You may request deletion of your personal information at any time. This includes:</p>
-    <ul>
-      <li>Deleting individual content you have uploaded within the App, such as posts, comments, and messages (available in-app).</li>
-      <li>Deletion of your account and the associated data tied to it.</li>
-    </ul>
-
-    <h2>How to request deletion</h2>
-    <p>To request deletion of your data or your account, email us using the link below. Please include the email address associated with your WRITERS account so we can locate and verify your request.</p>
-
-    <p style="margin:2rem 0;">
-      <a href="mailto:writerswrtrs@proton.me?subject=Data%20Deletion%20Request&body=Please%20delete%20my%20data.%0A%0AAccount%20email%3A%20%5Byour%20account%20email%5D"
-         style="display:inline-block; background:#FF6B35; color:#fff; padding:0.9rem 1.6rem; border-radius:8px; text-decoration:none; font-weight:700;">
-        📧 Request Data Deletion
+  <!-- 🌟 NAVIGATION -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <img src="assets/writers-icon.jpg" alt="WRITERS" class="nav-logo-icon" />
+        <span class="nav-logo-text">WRITERS</span>
+        <span class="nav-logo-ticker">$WRTRS</span>
       </a>
-    </p>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html#token" class="nav-link">Token</a>
+        <a href="index.html#culture" class="nav-link">Culture</a>
+        <a href="index.html#music" class="nav-link">Music</a>
+        <a href="index.html#roadmap" class="nav-link">Roadmap</a>
+        <a href="index.html#merch" class="nav-link">Merch</a>
+        <a href="index.html#community" class="nav-link">Community</a>
+        <a href="trench.html" class="nav-link trench-link">Trench Paper</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
 
-    <p>We will process your request within 30 days and confirm once your data has been deleted, subject to any legal retention requirements.</p>
+  <main class="doc-page">
+    <div class="doc-inner">
+      <a href="index.html" class="doc-back">&larr; Back to WRITERS</a>
+      <h1 class="doc-title">Request Data Deletion</h1>
 
-    <p style="margin-top:2rem; font-size:0.85rem; opacity:0.7;">For more details, see our <a href="privacy-policy.html" style="color:#FF6B35;">Privacy Policy</a>.</p>
+      <p>You may request deletion of your personal information at any time. This includes:</p>
+      <ul>
+        <li>Deleting individual content you have uploaded within the App, such as posts, comments, and messages (available in-app).</li>
+        <li>Deletion of your account and the associated data tied to it.</li>
+      </ul>
+
+      <h2>How to request deletion</h2>
+      <p>To request deletion of your data or your account, email us using the link below. Please include the email address associated with your WRITERS account so we can locate and verify your request.</p>
+
+      <p>
+        <a href="mailto:writerswrtrs@proton.me?subject=Data%20Deletion%20Request&body=Please%20delete%20my%20data.%0A%0AAccount%20email%3A%20%5Byour%20account%20email%5D" class="btn btn-primary">
+          📧 Request Data Deletion
+        </a>
+      </p>
+
+      <p>We will process your request within 30 days and confirm once your data has been deleted, subject to any legal retention requirements.</p>
+
+      <p class="doc-note">For more details, see our <a href="privacy-policy.html">Privacy Policy</a>.</p>
+    </div>
   </main>
+
+  <!-- 🦶 FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content" data-reveal>
+        <div class="footer-brand">
+          <span class="footer-logo"><img src="assets/writers-icon.jpg" alt="WRITERS" class="footer-icon" /> WRITERS</span>
+          <span class="footer-ticker">$WRTRS</span>
+        </div>
+        <div class="footer-links">
+          <span class="footer-disclaimer">
+            $WRTRS is a meme/community token. Not financial advice. Graffiti is illegal. 
+            This website is for informational purposes only.
+          </span>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 WRITERS. Moves in silence.</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
 </body>
 </html>

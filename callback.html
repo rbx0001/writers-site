@@ -4,24 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WRITERS — Opening app…</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/extras.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;700;800;900&family=Rubik+Spray+Paint&display=swap" rel="stylesheet" />
-  <style>
-    body { background: #0d0d0d; color: #e0e0e0; font-family: 'Inter', sans-serif; }
-    .cb-wrap { max-width: 520px; margin: 0 auto; padding: 5rem 1.5rem; text-align: center; }
-    .cb-wrap h1 { font-size: 2rem; color: #FF6B35; font-family: 'Bangers', cursive; letter-spacing: 1px; }
-    .cb-logo { width: 96px; height: 96px; border-radius: 22px; margin: 0 auto 1.5rem; overflow: hidden; }
-    .cb-logo img { width: 100%; height: 100%; object-fit: cover; }
-    .cb-redirect { margin-top: 2rem; font-size: 0.95rem; color: #999; }
-    .cb-btn {
-      display: inline-block; margin-top: 1.25rem; padding: 0.8rem 1.6rem;
-      background: #FF6B35; color: #fff; font-weight: 700; border-radius: 10px;
-      text-decoration: none;
-    }
-  </style>
+  <meta name="theme-color" content="#070706" />
+  <link rel="icon" type="image/jpeg" href="assets/writers-icon.jpg" />
+  <link rel="apple-touch-icon" href="assets/writers-icon.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/theme.css" />
 </head>
 <body>
+  <div class="grain" aria-hidden="true"></div>
+
   <main class="cb-wrap">
     <div class="cb-logo"><img src="writers-logo.jpg" alt="WRITERS" /></div>
     <h1>Opening WRITERS…</h1>
@@ -54,9 +47,9 @@
     })();
   </script>
 
-  <p id="noApp" style="display:none; margin-top:2rem; color:#FF6B35; font-weight:600;">
+  <p id="noApp" class="cb-hint">
     The WRITERS app isn't installed or couldn't be opened. Install it from the
-    <a href="https://play.google.com/store/apps/details?id=com.writers.writers_app" style="color:#FF6B35;">Google Play Store</a>,
+    <a href="https://play.google.com/store/apps/details?id=com.writers.writers_app">Google Play Store</a>,
     then request a new reset link.
   </p>
 </body>

@@ -4,19 +4,45 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trench Paper — WRITERS ($WRTRS)</title>
+  <meta name="description" content="The WRITERS Trench Paper — who we are, tokenomics, the roadmap, and how to buy $WRTRS." />
+  <meta name="theme-color" content="#070706" />
   <link rel="icon" type="image/jpeg" href="assets/writers-icon.jpg" />
-  <link rel="stylesheet" href="css/trench.css" />
+  <link rel="apple-touch-icon" href="assets/writers-icon.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <script>document.documentElement.classList.add('js');window.addEventListener('load',function(){setTimeout(function(){if(!window.__writersReady)document.documentElement.classList.remove('js');},1500);});</script>
 </head>
 <body>
-  <nav class="nav">
-    <a href="/" class="nav-logo"><img src="assets/writers-icon.jpg" alt="WRITERS" class="nav-icon-sm" /> WRITERS <span class="ticker">$WRTRS</span></a>
-    <a href="/" class="nav-back">← Back to site</a>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- 🌟 NAVIGATION -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <img src="assets/writers-icon.jpg" alt="WRITERS" class="nav-logo-icon" />
+        <span class="nav-logo-text">WRITERS</span>
+        <span class="nav-logo-ticker">$WRTRS</span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html#token" class="nav-link">Token</a>
+        <a href="index.html#culture" class="nav-link">Culture</a>
+        <a href="index.html#music" class="nav-link">Music</a>
+        <a href="index.html#roadmap" class="nav-link">Roadmap</a>
+        <a href="index.html#merch" class="nav-link">Merch</a>
+        <a href="index.html#community" class="nav-link">Community</a>
+        <a href="trench.html" class="nav-link trench-link">Trench Paper</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </nav>
 
-  <main class="paper">
-    <header class="paper-header">
+  <!-- 📰 TRENCH PAPER HEADER -->
+  <header class="trench-hero">
+    <div class="doc-inner">
       <div class="header-badge">TRENCH PAPER</div>
       <h1>WRITERS <span class="accent">$WRTRS</span></h1>
       <p class="subtitle">Illegible. Unstoppable. On-Chain.</p>
@@ -32,160 +58,184 @@
         <code class="ca">HWagQerEDV7L4877mPc3PxeS3aJ7aAx51s5t2txGpump</code>
         <a href="https://solscan.io/token/HWagQerEDV7L4877mPc3PxeS3aJ7aAx51s5t2txGpump" target="_blank" class="ca-link">↗</a>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <section>
-      <h2>1. What Is WRITERS?</h2>
-      <p>WRITERS is a community-owned meme token on Solana that celebrates graffiti and street art culture. It's a token for writers — the people who've been moving in silence, painting the unseen corners of the world, long before crypto existed.</p>
-      <p>There's no CEO. No VC. No roadmap written by suits. Just a can, a wall, and a blockchain.</p>
-    </section>
+  <main class="trench-doc">
+    <div class="doc-inner">
+      <section>
+        <h2>1. What Is WRITERS?</h2>
+        <p>WRITERS is a community-owned meme token on Solana that celebrates graffiti and street art culture. It's a token for writers — the people who've been moving in silence, painting the unseen corners of the world, long before crypto existed.</p>
+        <p>There's no CEO. No VC. No roadmap written by suits. Just a can, a wall, and a blockchain.</p>
+      </section>
 
-    <section>
-      <h2>2. Why Graffiti + Crypto?</h2>
-      <p>Graffiti and crypto share the same DNA:</p>
-      <ul>
-        <li><strong>Permissionless</strong> — No one asked if you could paint that wall. No one asked if you could launch a token.</li>
-        <li><strong>Pseudonymous</strong> — Writers use tags. Degens use wallets.</li>
-        <li><strong>Immutable</strong> — A tag on a wall won't last forever, but a token on Solana might.</li>
-        <li><strong>Anti-establishment</strong> — Graffiti rejects the gallery. Crypto rejects the bank.</li>
-        <li><strong>Community</strong> — Writers respect writers. Degens respect degens.</li>
-      </ul>
-      <p>$WRTRS is the crossover. The bridge between spray cans and smart contracts.</p>
-    </section>
-
-    <section>
-      <h2>3. Tokenomics</h2>
-      <div class="tomo-table">
-        <div class="tomo-row">
-          <span>Token Name</span>
-          <span>WRITERS</span>
-        </div>
-        <div class="tomo-row">
-          <span>Ticker</span>
-          <span class="accent">$WRTRS</span>
-        </div>
-        <div class="tomo-row">
-          <span>Chain</span>
-          <span>Solana (SPL)</span>
-        </div>
-        <div class="tomo-row">
-          <span>Total Supply</span>
-          <span>1,000,000,000</span>
-        </div>
-        <div class="tomo-row">
-          <span>Tax</span>
-          <span>0%</span>
-        </div>
-        <div class="tomo-row">
-          <span>LP</span>
-          <span>Burned</span>
-        </div>
-        <div class="tomo-row">
-          <span>Ownership</span>
-          <span>Renounced</span>
-        </div>
-        <div class="tomo-row">
-          <span>Mint</span>
-          <span>Revoked</span>
-        </div>
-        <div class="tomo-row">
-          <span>Freeze</span>
-          <span>Revoked</span>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h2>4. The Pitch</h2>
-      <p>Every graffiti writer starts with a tag. It's the first step — simple, raw, yours. $WRTRS is the tag. A token you can ape into, hold, and watch grow as the community builds.</p>
-      <p>This isn't a utility token trying to be something it's not. It's a culture. A flag to plant. A way for writers, collectors, and degens to align under one spray can.</p>
-    </section>
-
-    <section>
-      <h2>5. The Crew</h2>
-      <p>WRITERS is built by and for the street. There's no doxxed team. No VC behind the scenes. Just a small crew of people who've been in graffiti culture for years and saw an opportunity to bring the ethos on-chain.</p>
-      <p>We're transparent about the token — you have the contract, you have the links, you have the same information we do. That's how trenches work.</p>
-    </section>
-
-    <section>
-      <h2>6. Roadmap</h2>
-      <div class="phase">
-        <div class="phase-head">
-          <span class="phase-tag done">DONE</span>
-          <h3>Phase 1: The Tag</h3>
-        </div>
+      <section>
+        <h2>2. Why Graffiti + Crypto?</h2>
+        <p>Graffiti and crypto share the same DNA:</p>
         <ul>
-          <li>✅ $WRTRS launch on Pump.fun</li>
-          <li>✅ Trench paper &amp; socials</li>
-          <li>✅ Website &amp; community building</li>
+          <li><strong>Permissionless</strong> — No one asked if you could paint that wall. No one asked if you could launch a token.</li>
+          <li><strong>Pseudonymous</strong> — Writers use tags. Degens use wallets.</li>
+          <li><strong>Immutable</strong> — A tag on a wall won't last forever, but a token on Solana might.</li>
+          <li><strong>Anti-establishment</strong> — Graffiti rejects the gallery. Crypto rejects the bank.</li>
+          <li><strong>Community</strong> — Writers respect writers. Degens respect degens.</li>
         </ul>
-      </div>
-      <div class="phase">
-        <div class="phase-head">
-          <span class="phase-tag live">LIVE</span>
-          <h3>Phase 2: The Piece</h3>
+        <p>$WRTRS is the crossover. The bridge between spray cans and smart contracts.</p>
+      </section>
+
+      <section>
+        <h2>3. Tokenomics</h2>
+        <div class="tomo-table">
+          <div class="tomo-row">
+            <span>Token Name</span>
+            <span>WRITERS</span>
+          </div>
+          <div class="tomo-row">
+            <span>Ticker</span>
+            <span class="accent">$WRTRS</span>
+          </div>
+          <div class="tomo-row">
+            <span>Chain</span>
+            <span>Solana (SPL)</span>
+          </div>
+          <div class="tomo-row">
+            <span>Total Supply</span>
+            <span>1,000,000,000</span>
+          </div>
+          <div class="tomo-row">
+            <span>Tax</span>
+            <span>0%</span>
+          </div>
+          <div class="tomo-row">
+            <span>LP</span>
+            <span>Burned</span>
+          </div>
+          <div class="tomo-row">
+            <span>Ownership</span>
+            <span>Renounced</span>
+          </div>
+          <div class="tomo-row">
+            <span>Mint</span>
+            <span>Revoked</span>
+          </div>
+          <div class="tomo-row">
+            <span>Freeze</span>
+            <span>Revoked</span>
+          </div>
         </div>
-        <ul>
-          <li>🔴 DexScreener listing</li>
-          <li>✅ Graffiti gallery &amp; artist features in the WRITERS App</li>
-          <li>✅ Community growth</li>
-          <li>🔴 WRITERS App (Android &amp; iOS)</li>
-        </ul>
-      </div>
-      <div class="phase">
-        <div class="phase-head">
-          <span class="phase-tag">PHASE 3</span>
-          <h3>The Production</h3>
+      </section>
+
+      <section>
+        <h2>4. The Pitch</h2>
+        <p>Every graffiti writer starts with a tag. It's the first step — simple, raw, yours. $WRTRS is the tag. A token you can ape into, hold, and watch grow as the community builds.</p>
+        <p>This isn't a utility token trying to be something it's not. It's a culture. A flag to plant. A way for writers, collectors, and degens to align under one spray can.</p>
+      </section>
+
+      <section>
+        <h2>5. The Crew</h2>
+        <p>WRITERS is built by and for the street. There's no doxxed team. No VC behind the scenes. Just a small crew of people who've been in graffiti culture for years and saw an opportunity to bring the ethos on-chain.</p>
+        <p>We're transparent about the token — you have the contract, you have the links, you have the same information we do. That's how trenches work.</p>
+      </section>
+
+      <section>
+        <h2>6. Roadmap</h2>
+        <div class="phase">
+          <div class="phase-head">
+            <span class="phase-tag done">DONE</span>
+            <h3>Phase 1: The Tag</h3>
+          </div>
+          <ul>
+            <li>✅ $WRTRS launch on Pump.fun</li>
+            <li>✅ Trench paper &amp; socials</li>
+            <li>✅ Website &amp; community building</li>
+          </ul>
         </div>
-        <ul>
-          <li>Merch store (tees, hoodies, stickers)</li>
-          <li>NFT collection — digital graffiti pieces</li>
-        </ul>
-      </div>
-      <div class="phase">
-        <div class="phase-head">
-          <span class="phase-tag">PHASE 4</span>
-          <h3>The Movement</h3>
+        <div class="phase">
+          <div class="phase-head">
+            <span class="phase-tag live">LIVE</span>
+            <h3>Phase 2: The Piece</h3>
+          </div>
+          <ul>
+            <li>🔴 DexScreener listing</li>
+            <li>✅ Graffiti gallery &amp; artist features in the WRITERS App</li>
+            <li>✅ Community growth</li>
+            <li>🔴 WRITERS App (Android &amp; iOS)</li>
+          </ul>
         </div>
-        <ul>
-          <li>Artist grants from the treasury</li>
-          <li>WRITERS DAO</li>
-        </ul>
-      </div>
-    </section>
+        <div class="phase">
+          <div class="phase-head">
+            <span class="phase-tag">PHASE 3</span>
+            <h3>The Production</h3>
+          </div>
+          <ul>
+            <li>Merch store (tees, hoodies, stickers)</li>
+            <li>NFT collection — digital graffiti pieces</li>
+          </ul>
+        </div>
+        <div class="phase">
+          <div class="phase-head">
+            <span class="phase-tag">PHASE 4</span>
+            <h3>The Movement</h3>
+          </div>
+          <ul>
+            <li>Artist grants from the treasury</li>
+            <li>WRITERS DAO</li>
+          </ul>
+        </div>
+      </section>
 
-    <section>
-      <h2>7. How to Buy</h2>
-      <ol>
-        <li>Get a Solana wallet (Phantom, Backpack, or Solflare)</li>
-        <li>Buy SOL on an exchange (Coinbase, Binance, Kraken)</li>
-        <li>Send SOL to your wallet</li>
-        <li>Go to <a href="https://pump.fun/coin/HWagQerEDV7L4877mPc3PxeS3aJ7aAx51s5t2txGpump" target="_blank">Pump.fun</a></li>
-        <li>Swap SOL for $WRTRS</li>
-        <li>Hold. Share. Write.</li>
-      </ol>
-    </section>
+      <section>
+        <h2>7. How to Buy</h2>
+        <ol>
+          <li>Get a Solana wallet (Phantom, Backpack, or Solflare)</li>
+          <li>Buy SOL on an exchange (Coinbase, Binance, Kraken)</li>
+          <li>Send SOL to your wallet</li>
+          <li>Go to <a href="https://pump.fun/coin/HWagQerEDV7L4877mPc3PxeS3aJ7aAx51s5t2txGpump" target="_blank">Pump.fun</a></li>
+          <li>Swap SOL for $WRTRS</li>
+          <li>Hold. Share. Write.</li>
+        </ol>
+      </section>
 
-    <section>
-      <h2>8. Links</h2>
-      <div class="links-list">
-        <a href="https://writerswrtrs.com" target="_blank">🌐 Website</a>
-        <a href="https://t.me/writers_wrtrs" target="_blank">💬 Telegram (@writers_wrtrs)</a>
-        <a href="https://pump.fun/coin/HWagQerEDV7L4877mPc3PxeS3aJ7aAx51s5t2txGpump" target="_blank">🪙 Pump.fun</a>
-        <a href="https://solscan.io/token/HWagQerEDV7L4877mPc3PxeS3aJ7aAx51s5t2txGpump" target="_blank">🔍 Solscan</a>
-        <a href="https://dexscreener.com/solana/daebxjq7ckypzneqdomgjnugxvuhn6cauo3tgwt1upsf" target="_blank">📊 DEX Screener</a>
-        <a href="https://x.com/writers_wrtrs" target="_blank">🐦 Twitter / X (@writers_wrtrs)</a>
-      </div>
-    </section>
+      <section>
+        <h2>8. Links</h2>
+        <div class="links-list">
+          <a href="https://writerswrtrs.com" target="_blank">🌐 Website</a>
+          <a href="https://t.me/writers_wrtrs" target="_blank">💬 Telegram (@writers_wrtrs)</a>
+          <a href="https://pump.fun/coin/HWagQerEDV7L4877mPc3PxeS3aJ7aAx51s5t2txGpump" target="_blank">🪙 Pump.fun</a>
+          <a href="https://solscan.io/token/HWagQerEDV7L4877mPc3PxeS3aJ7aAx51s5t2txGpump" target="_blank">🔍 Solscan</a>
+          <a href="https://dexscreener.com/solana/daebxjq7ckypzneqdomgjnugxvuhn6cauo3tgwt1upsf" target="_blank">📊 DEX Screener</a>
+          <a href="https://x.com/writers_wrtrs" target="_blank">🐦 Twitter / X (@writers_wrtrs)</a>
+        </div>
+      </section>
 
-    <section class="disclaimer">
-      <h2>Disclaimer</h2>
-      <p>$WRTRS is a community meme token. It has no intrinsic value, promises no financial returns, and should not be considered an investment. Graffiti is illegal in most places. Do your own research. Stay safe out there.</p>
-    </section>
-
-    <footer class="paper-footer">
-      <p>WRITERS — Moves in silence. Tag the chain. 🎨</p>
-    </footer>
+      <section class="disclaimer">
+        <h2>Disclaimer</h2>
+        <p>$WRTRS is a community meme token. It has no intrinsic value, promises no financial returns, and should not be considered an investment. Graffiti is illegal in most places. Do your own research. Stay safe out there.</p>
+      </section>
+    </div>
   </main>
+
+  <!-- 🦶 FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content" data-reveal>
+        <div class="footer-brand">
+          <span class="footer-logo"><img src="assets/writers-icon.jpg" alt="WRITERS" class="footer-icon" /> WRITERS</span>
+          <span class="footer-ticker">$WRTRS</span>
+        </div>
+        <div class="footer-links">
+          <span class="footer-paper-note">WRITERS — Moves in silence. Tag the chain. 🎨</span>
+          <span class="footer-disclaimer">
+            $WRTRS is a meme/community token. Not financial advice. Graffiti is illegal. 
+            This website is for informational purposes only.
+          </span>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 WRITERS. Moves in silence.</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
 </body>
 </html>

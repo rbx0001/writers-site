@@ -92,7 +92,6 @@ ul{margin:0;padding:0;list-style:none;}
   background:
     radial-gradient(120% 78% at 50% -10%,rgba(255,77,18,.12),transparent 58%),
     radial-gradient(80% 60% at 88% 96%,rgba(255,77,18,.07),transparent 62%),
-    url("../assets/video/writers-street-art-poster.jpg") center/cover no-repeat,
     var(--bg);
 }
 .hero-overlay{
@@ -100,10 +99,6 @@ ul{margin:0;padding:0;list-style:none;}
   background:
     linear-gradient(180deg,rgba(7,7,6,.55),transparent 26%,transparent 62%,rgba(7,7,6,.9) 100%),
     repeating-linear-gradient(90deg,transparent 0 119px,rgba(236,231,221,.03) 119px 120px);
-}
-.hero-video{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;
-  opacity:.42;filter:saturate(.92) contrast(1.06) brightness(.8);
 }
 .graffiti-layer{position:absolute;inset:0;overflow:hidden;pointer-events:none;opacity:.55;
   -webkit-mask-image:radial-gradient(120% 85% at 50% 58%,#000 42%,transparent 82%);
@@ -320,7 +315,6 @@ body.loaded .hero-actions{animation-delay:.44s;}
   html{scroll-behavior:auto;}
   html.js [data-reveal],html.js .hero-content>*{opacity:1;transform:none;animation:none;}
   .graffiti-layer canvas{animation:none;}
-  .hero-video{display:none;}
   .scroll-hint{animation:none;}
 }
 

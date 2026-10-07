@@ -174,6 +174,45 @@
         </div>
       </div>
     </div>
+  <!-- 📡 HOLDER SIGNAL / LIVE MARKET -->
+  <section class="section section-dark" id="rewards">
+    <div class="container">
+      <div class="section-header" data-reveal>
+        <span class="tag">Holder Signal</span>
+        <h2>Live $WRTRS Market</h2>
+        <p class="section-sub">Numbers pulled live from the chain and DEX Screener. No claims, no promises — verify anything before you trade.</p>
+      </div>
+
+      <div class="token-grid">
+        <div class="token-card token-card-wide" data-reveal>
+          <div class="token-card-icon">📡</div>
+          <h3>Market Signal</h3>
+          <div class="tokenomics-grid">
+            <div class="tomo-item">
+              <div class="tomo-value" id="mkPrice">—</div>
+              <div class="tomo-label">Price USD</div>
+            </div>
+            <div class="tomo-item">
+              <div class="tomo-value" id="mkVolume">—</div>
+              <div class="tomo-label">24h Volume</div>
+            </div>
+            <div class="tomo-item">
+              <div class="tomo-value" id="mkLiquidity">—</div>
+              <div class="tomo-label">Liquidity</div>
+            </div>
+            <div class="tomo-item">
+              <div class="tomo-value" id="mkCap">—</div>
+              <div class="tomo-label">Market Cap</div>
+            </div>
+          </div>
+          <p class="token-card-desc" id="mkStatus">Checking live market data…</p>
+          <div class="contract-links">
+            <a href="https://dexscreener.com/solana/daebxjq7ckypzneqdomgjnugxvuhn6cauo3tgwt1upsf" target="_blank" rel="noopener" class="btn-sm">DexScreener ↗</a>
+            <a href="https://solscan.io/token/HWagQerEDV7L4877mPc3PxeS3aJ7aAx51s5t2txGpump" target="_blank" rel="noopener" class="btn-sm">Solscan ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- 🎨 CULTURE / GRAFFITI SECTION -->
@@ -461,6 +500,7 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <script src="js/market.js"></script>
   <script src="js/namer.js"></script>
   <script src="js/geolocate.js"></script>
 </body>

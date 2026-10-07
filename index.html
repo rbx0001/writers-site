@@ -4,14 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WRITERS — $WRTRS</title>
+  <meta name="description" content="The first graffiti and street art culture token on Solana. Writers move in silence — $WRTRS moves on-chain." />
+  <meta name="theme-color" content="#070706" />
   <link rel="icon" type="image/jpeg" href="assets/writers-icon.jpg" />
   <link rel="apple-touch-icon" href="assets/writers-icon.jpg" />
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/extras.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;700;800;900&family=Rubik+Spray+Paint&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <script>document.documentElement.classList.add('js');window.addEventListener('load',function(){setTimeout(function(){if(!window.__writersReady)document.documentElement.classList.remove('js');},1500);});</script>
 </head>
 <body>
+  <div class="grain" aria-hidden="true"></div>
+
   <!-- 🌟 NAVIGATION -->
   <nav class="navbar" id="navbar">
     <div class="nav-container">
@@ -69,7 +74,7 @@
   <!-- 🪙 TOKEN SECTION -->
   <section class="section section-dark" id="token">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header" data-reveal>
         <span class="tag">Token</span>
         <h2>$WRTRS — The Writers' Token</h2>
         <p class="section-sub">Born from spray cans and smart contracts.</p>
@@ -81,7 +86,7 @@
       </div>
 
       <div class="token-grid">
-        <div class="token-card">
+        <div class="token-card" data-reveal>
           <div class="token-card-icon">🪙</div>
           <h3>Token Info</h3>
           <div class="token-info-row">
@@ -102,7 +107,7 @@
           </div>
         </div>
 
-        <div class="token-card">
+        <div class="token-card" data-reveal style="--rd:80ms">
           <div class="token-card-icon">📋</div>
           <h3>Contract</h3>
           <div class="ca-wrapper">
@@ -117,7 +122,7 @@
           </div>
         </div>
 
-        <div class="token-card token-card-wide">
+        <div class="token-card token-card-wide" data-reveal style="--rd:160ms">
           <div class="token-card-icon">💰</div>
           <h3>Holder Rewards</h3>
           <p class="token-card-desc">Hold $WRTRS, get rewarded — paid out in Solana, just for holding. No staking, no lock-ups, no friction. The longer you hold, the higher the ceiling.</p>
@@ -141,7 +146,7 @@
           </div>
         </div>
 
-        <div class="token-card token-card-wide">
+        <div class="token-card token-card-wide" data-reveal style="--rd:240ms">
           <div class="token-card-icon">⚡</div>
           <h3>Tokenomics</h3>
           <div class="tokenomics-grid">
@@ -170,14 +175,14 @@
   <!-- 🎨 CULTURE / GRAFFITI SECTION -->
   <section class="section section-light" id="culture">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header" data-reveal>
         <span class="tag">Culture</span>
         <h2>Graffiti &amp; Street Art</h2>
         <p class="section-sub">Writers have been moving in silence since before the internet. Now we move on-chain.</p>
       </div>
 
       <div class="culture-content">
-        <div class="culture-text">
+        <div class="culture-text" data-reveal>
           <h3>The Spirit of the Writer</h3>
           <p>Graffiti is the original decentralized art form. No permission. No gatekeepers. Just a can, a wall, and the will to be seen. Writers risk everything for a tag that might buff out by morning — because the act itself is the point.</p>
           <p>$WRTRS channels that same energy into crypto. No VC rounds. No insider allocations. Just a community of people who understand that real culture can't be captured — it has to be lived.</p>
@@ -200,7 +205,7 @@
             </div>
           </div>
         </div>
-        <div class="culture-gallery">
+        <div class="culture-gallery" data-reveal style="--rd:120ms">
           <div class="gallery-grid">
             <div class="gallery-item gallery-item-main">
               <img src="writers-art.jpg" alt="Writers Street Art" />
@@ -218,12 +223,12 @@
   <section class="section section-light" style="padding-top: 0;">
     <div class="container">
       <div class="map-section">
-        <div class="section-header">
+        <div class="section-header" data-reveal>
           <span class="tag">Map</span>
           <h2>Graffiti Map</h2>
           <p class="section-sub">Pin the spots. Real walls, real writers. Explore the map — then drop your own pin in the app.</p>
         </div>
-        <div class="map-embed">
+        <div class="map-embed" data-reveal>
           <iframe 
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.91477084472!2d-74.11976342288286!3d40.69740344225746!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew+York%2C+NY!5e0!3m2!1sen!2sus!4v1"
             loading="lazy"
@@ -231,7 +236,7 @@
             title="Graffiti Map">
           </iframe>
         </div>
-        <div class="map-actions">
+        <div class="map-actions" data-reveal style="--rd:100ms">
           <a href="#" class="btn-sm" id="graffitiNearMe">Find Graffiti Near Me →</a>
           <a href="/writersapp/" class="btn-sm">Add your spot in the app →</a>
         </div>
@@ -243,12 +248,12 @@
   <section class="section section-dark" id="music">
     <div class="container">
       <div class="map-section">
-        <div class="section-header">
+        <div class="section-header" data-reveal>
           <span class="tag">Music</span>
           <h2>WRITERS Sound</h2>
           <p class="section-sub">The soundtrack of the streets. Same energy, different medium — press play.</p>
         </div>
-        <div class="map-embed">
+        <div class="map-embed" data-reveal>
           <iframe
             width="100%"
             height="450"
@@ -260,7 +265,7 @@
             title="WRITERS on SoundCloud">
           </iframe>
         </div>
-        <div class="map-actions">
+        <div class="map-actions" data-reveal style="--rd:100ms">
           <a href="https://soundcloud.com/writers-286799531" target="_blank" rel="noopener" class="btn-sm">Follow on SoundCloud →</a>
         </div>
       </div>
@@ -271,14 +276,14 @@
   <!-- 🗺️ ROADMAP -->
   <section class="section section-dark" id="roadmap">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header" data-reveal>
         <span class="tag">Roadmap</span>
         <h2>The Writers' Manifesto</h2>
         <p class="section-sub">No corporate milestones. Just culture building.</p>
       </div>
 
       <div class="roadmap">
-        <div class="roadmap-phase">
+        <div class="roadmap-phase" data-reveal>
           <div class="phase-badge phase-done">Phase 1 ✓ DONE</div>
           <h3>The Tag</h3>
           <ul>
@@ -287,7 +292,7 @@
             <li>✔ Website &amp; community building</li>
           </ul>
         </div>
-        <div class="roadmap-phase">
+        <div class="roadmap-phase" data-reveal style="--rd:80ms">
           <div class="phase-badge phase-live">Phase 2 🔴 LIVE</div>
           <h3>The Piece</h3>
           <ul>
@@ -297,7 +302,7 @@
             <li>🔴 WRITERS App (Android &amp; iOS)</li>
           </ul>
         </div>
-        <div class="roadmap-phase">
+        <div class="roadmap-phase" data-reveal style="--rd:160ms">
           <div class="phase-badge">PHASE 3</div>
           <h3>The Production</h3>
           <ul>
@@ -305,7 +310,7 @@
             <li>NFT collection — digital graffiti pieces</li>
           </ul>
         </div>
-        <div class="roadmap-phase">
+        <div class="roadmap-phase" data-reveal style="--rd:240ms">
           <div class="phase-badge">PHASE 4</div>
           <h3>The Movement</h3>
           <ul>
@@ -320,14 +325,14 @@
   <!-- 👕 MERCH SECTION -->
   <section class="section section-light" id="merch">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header" data-reveal>
         <span class="tag">Merch</span>
         <h2>WRITERS Gear</h2>
         <p class="section-sub">Rep the movement. Wear the culture.</p>
       </div>
 
       <div class="merch-grid">
-        <div class="merch-card">
+        <div class="merch-card" data-reveal>
           <div class="merch-image merch-image-placeholder">
             <div class="merch-art-bg">
               <span class="merch-preview-text">$WRTRS</span>
@@ -346,7 +351,7 @@
           </div>
         </div>
 
-        <div class="merch-card">
+        <div class="merch-card" data-reveal style="--rd:80ms">
           <div class="merch-image merch-image-placeholder">
             <div class="merch-art-bg merch-purple">
               <span class="merch-preview-text">WRITERS</span>
@@ -365,7 +370,7 @@
           </div>
         </div>
 
-        <div class="merch-card">
+        <div class="merch-card" data-reveal style="--rd:160ms">
           <div class="merch-image merch-image-placeholder">
             <div class="merch-art-bg merch-green">
               <span class="merch-preview-text">$WRTRS</span>
@@ -381,7 +386,7 @@
           </div>
         </div>
 
-        <div class="merch-card">
+        <div class="merch-card" data-reveal style="--rd:240ms">
           <div class="merch-image merch-image-placeholder">
             <div class="merch-art-bg merch-orange">
               <span class="merch-preview-text">TAG</span>
@@ -403,24 +408,24 @@
   <!-- 🤝 COMMUNITY -->
   <section class="section section-dark" id="community">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header" data-reveal>
         <span class="tag">Community</span>
         <h2>Join the Crew</h2>
         <p class="section-sub">Writers don't ask for permission. They show up.</p>
       </div>
 
       <div class="community-grid">
-        <a href="https://x.com/writers_wrtrs" target="_blank" class="community-card">
+        <a href="https://x.com/writers_wrtrs" target="_blank" class="community-card" data-reveal>
           <div class="community-icon">🐦</div>
           <h3>Twitter / X</h3>
           <p>@writers_wrtrs</p>
         </a>
-        <a href="https://t.me/writers_wrtrs" target="_blank" class="community-card">
+        <a href="https://t.me/writers_wrtrs" target="_blank" class="community-card" data-reveal style="--rd:80ms">
           <div class="community-icon">💬</div>
           <h3>Telegram</h3>
           <p>@writers_wrtrs</p>
         </a>
-        <a href="https://dexscreener.com/solana/daebxjq7ckypzneqdomgjnugxvuhn6cauo3tgwt1upsf" target="_blank" rel="noopener" class="community-card">
+        <a href="https://dexscreener.com/solana/daebxjq7ckypzneqdomgjnugxvuhn6cauo3tgwt1upsf" target="_blank" rel="noopener" class="community-card" data-reveal style="--rd:160ms">
           <div class="community-icon">📊</div>
           <h3>Chart</h3>
           <p>DexScreener</p>
@@ -433,7 +438,7 @@
   <!-- 🦶 FOOTER -->
   <footer class="footer">
     <div class="container">
-      <div class="footer-content">
+      <div class="footer-content" data-reveal>
         <div class="footer-brand">
           <span class="footer-logo"><img src="assets/writers-icon.jpg" alt="WRITERS" class="footer-icon" /> WRITERS</span>
           <span class="footer-ticker">$WRTRS</span>

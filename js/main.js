@@ -5,6 +5,12 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  // Signal to the inline head-script safety net that JS initialised.
+  window.__writersReady = true;
+
+  // ======== Boot-ish reveal ========
+  requestAnimationFrame(() => document.body.classList.add('loaded'));
+
   // ======== Mobile Nav Toggle ========
   const navToggle = document.getElementById('navToggle');
   const navLinks = document.getElementById('navLinks');
@@ -14,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
       navLinks.classList.toggle('open');
     });
 
-    // Close on link click
     document.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', () => {
         navLinks.classList.remove('open');
@@ -30,15 +35,14 @@ document.addEventListener('DOMContentLoaded', () => {
     copyBtn.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(caEl.textContent.trim());
-        showToast('CA copied! 📋');
+        showToast('CA copied');
       } catch {
-        // Fallback
         const range = document.createRange();
         range.selectNode(caEl);
         window.getSelection().removeAllRanges();
         window.getSelection().addRange(range);
         document.execCommand('copy');
-        showToast('CA copied! 📋');
+        showToast('CA copied');
       }
     });
   }
@@ -58,102 +62,109 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 2000);
   }
 
-  // ======== Scroll Fade-in Animations ========
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+  // ======== Scroll Reveals ========
+  const revealTargets = document.querySelectorAll('[data-reveal], .fade-in');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reduce || !('IntersectionObserver' in window)) {
+    revealTargets.forEach(el => el.classList.add('in', 'visible'));
+  } else {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in', 'visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+    revealTargets.forEach(el => observer.observe(el));
+  }
+
+  // ======== Navbar state on scroll ========
+  const navbar = document.getElementById('navbar');
+  let ticking = false;
+
+  const setNavState = () => {
+    if (!navbar) return;
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+    ticking = false;
   };
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, observerOptions);
-
-  // Observe all token cards, roadmap phases, merch cards, community cards
-  document.querySelectorAll('.token-card, .roadmap-phase, .merch-card, .community-card').forEach(el => {
-    el.classList.add('fade-in');
-    observer.observe(el);
-  });
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(setNavState);
+    }
+  }, { passive: true });
+  setNavState();
 
   // ======== Graffiti Canvas Background ========
   const canvas = document.createElement('canvas');
   const wrapper = document.getElementById('graffitiCanvas');
+
   if (wrapper) {
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
     wrapper.appendChild(canvas);
 
-    // Spray paint effect
-    const spray = (x, y, color, radius, density) => {
+    const colors = ['#ff4d12', '#ff7a3d', '#ece7dd', '#ff4d12'];
+
+    const spray = (x, y, color, radius, density, alphaCap) => {
       for (let i = 0; i < density; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const r = Math.random() * radius;
-        const dx = x + Math.cos(angle) * r;
-        const dy = y + Math.sin(angle) * r;
+        const rr = Math.pow(Math.random(), 0.6) * radius;
+        const dx = x + Math.cos(angle) * rr;
+        const dy = y + Math.sin(angle) * rr;
         ctx.fillStyle = color;
-        ctx.globalAlpha = Math.random() * 0.15;
+        ctx.globalAlpha = Math.random() * alphaCap;
         ctx.beginPath();
-        ctx.arc(dx, dy, Math.random() * 2 + 0.5, 0, Math.PI * 2);
+        ctx.arc(dx, dy, Math.random() * 1.8 + 0.4, 0, Math.PI * 2);
         ctx.fill();
       }
     };
 
-    // Generate some graffiti tags
-    const colors = ['#ff6b35', '#ffd700', '#00ffc8', '#9b59b6', '#e74c3c', '#3498db', '#2ecc71'];
-    const w = canvas.width;
-    const h = canvas.height;
+    const render = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = wrapper.clientWidth || window.innerWidth;
+      const h = wrapper.clientHeight || window.innerHeight;
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
 
-    // Spray clusters
-    for (let i = 0; i < 15; i++) {
-      const x = Math.random() * w;
-      const y = Math.random() * h;
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      const radius = 20 + Math.random() * 60;
-      spray(x, y, color, radius, 60 + Math.random() * 80);
-    }
+      // Edge-weighted spray clusters — keep the centre clear for the headline.
+      const clusters = [
+        [0.06, 0.24], [0.14, 0.72], [0.9, 0.2], [0.82, 0.78],
+        [0.3, 0.92], [0.68, 0.08], [0.98, 0.52], [0.02, 0.5]
+      ];
+      clusters.forEach(([cx, cy], i) => {
+        const color = colors[i % colors.length];
+        spray(cx * w, cy * h, color, 26 + Math.random() * 54, 70 + Math.random() * 70, 0.09);
+      });
 
-    // Some drips
-    for (let i = 0; i < 8; i++) {
-      const x = 50 + Math.random() * (w - 100);
-      const startY = 20 + Math.random() * (h * 0.4);
-      const length = 30 + Math.random() * 100;
-      const color = colors[Math.floor(Math.random() * colors.length)];
-
-      for (let j = 0; j < length; j += 2) {
-        const alpha = 0.1 - (j / length) * 0.08;
-        ctx.fillStyle = color;
-        ctx.globalAlpha = Math.max(alpha, 0.01);
-        ctx.fillRect(x, startY + j, 2 + Math.random() * 2, 3);
+      // Hairline drips from the top edge.
+      for (let i = 0; i < 7; i++) {
+        const x = 30 + Math.random() * (w - 60);
+        const startY = Math.random() * (h * 0.18);
+        const length = 40 + Math.random() * 120;
+        const color = colors[i % colors.length];
+        for (let j = 0; j < length; j += 2) {
+          const alpha = 0.07 - (j / length) * 0.06;
+          ctx.fillStyle = color;
+          ctx.globalAlpha = Math.max(alpha, 0.008);
+          ctx.fillRect(x, startY + j, 1 + Math.random() * 1.6, 3);
+        }
       }
-    }
 
-    ctx.globalAlpha = 1;
+      ctx.globalAlpha = 1;
+    };
+
+    render();
+
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(render, 200);
+    });
   }
-
-  // ======== Navbar border on scroll ========
-  const navbar = document.getElementById('navbar');
-  let lastScroll = 0;
-
-  window.addEventListener('scroll', () => {
-    const currentScroll = window.scrollY;
-    if (currentScroll > 50) {
-      navbar.style.borderBottomColor = 'rgba(255, 107, 53, 0.25)';
-    } else {
-      navbar.style.borderBottomColor = 'rgba(255, 107, 53, 0.15)';
-    }
-    lastScroll = currentScroll;
-  });
-
-  // ======== Resize handler for canvas ========
-  window.addEventListener('resize', () => {
-    if (canvas && wrapper) {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-  });
 });

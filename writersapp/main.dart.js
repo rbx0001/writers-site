@@ -131152,7 +131152,7 @@ for(;;)switch(s){case 0:p=$.aA()
 o=p.b
 o===$&&A.a()
 s=3
-return A.i(A.ari(o.gbo(),B.t5,"https://writerswrtrs.com/callback"),$async$Fn)
+return A.i(A.ari(o.gbo(),B.t5,"https://writerswrtrs.com/writersapp/"),$async$Fn)
 case 3:p=p.b.gbo().e.a
 q=p==null?null:p.r
 s=1
